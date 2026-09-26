@@ -1,0 +1,33 @@
+{
+  "domains": [
+    "ncbi.nlm.nih.gov",
+    "pmc.ncbi.nlm.nih.gov",
+    "europepmc.org",
+    "cochranelibrary.com",
+    "nejm.org",
+    "thelancet.com",
+    "jamanetwork.com",
+    "bmj.com",
+    "nature.com",
+    "science.org",
+    "acpjournals.org",
+    "ahajournals.org",
+    "diabetesjournals.org",
+    "academic.oup.com",
+    "journals.plos.org",
+    "plos.org",
+    "biomedcentral.com",
+    "karger.com",
+    "thelancet.com",
+    "cell.com",
+    "jacc.org",
+    "onlinejacc.org",
+    "gastrojournal.org",
+    "gut.bmj.com",
+    "thorax.bmj.com",
+    "annals.org",
+    "acponline.org",
+    "mayoclinicproceedings.org",
+    "cochrane.org"
+  ]
+}
