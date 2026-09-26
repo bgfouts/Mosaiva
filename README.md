@@ -31,9 +31,9 @@ Open http://127.0.0.1:5173. The web app proxies `/api` to the local API.
 
 | Name | Purpose |
 | --- | --- |
-| `OPENAI_API_KEY` | Stays on this machine. The browser receives only a short-lived Realtime client secret. |
-| `OPENAI_REALTIME_MODEL` | Voice model. Default `gpt-realtime`. |
-| `OPENAI_REASONING_MODEL` | Mosaic and research notes. Default `gpt-4.1`. |
+| `OPENAI_API_KEY` | Stays on this machine. The browser never receives it. |
+| `OPENAI_LIVE_MODEL` | Voice model. Default `gpt-live-1`. |
+| `OPENAI_REASONING_MODEL` | Mosaic, research notes, and the GPT-Live tool backend. Default `gpt-5.6-terra`. |
 
 Without a key, Coach shows an error and does not offer typing. Mosaic returns an error instead of inventing a review.
 
@@ -42,7 +42,7 @@ Without a key, Coach shows an error and does not offer typing. Mosaic returns an
 - **Hypotheses.** Add, edit, and remove working estimates. You set the starting probability. Mosaic can move it later, and you can override that.
 - **Interventions.** Medicines, diet, lifestyle, supplements, and therapy, with benefit and side-effect burden. Items you are not taking can be marked “ask a clinician” and cannot store a dose.
 - **Research.** Web search, then a filter: the file must download as a PDF, the host cannot be a paywall bypass, and the journal domain must be on `api/app/data/reputable_journals.json`.
-- **Coach.** Voice only, via the OpenAI Realtime API. Tool calls stay pending until you confirm them on screen or with a spoken yes.
+- **Coach.** Voice only, via GPT-Live. The browser sends its WebRTC offer to this API, which opens the Live session. Tool calls stay pending until you confirm them on screen or with a spoken yes.
 - **Mosaic.** One review per local week, in the timezone from the sidebar. It updates working estimates and suggests add, remove, or hold. A second run in the same week returns the same review.
 
 ## Tests

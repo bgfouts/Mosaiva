@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException
+import json
+
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
@@ -6,7 +8,15 @@ from app.db import get_db
 from app.models import Capture, CoachSession
 from app.schemas import CoachEventIn
 from app.serialize import capture_dict, session_dict
-from app.services.coach import URGENT_MESSAGE, append_event, commit_capture, discard_capture, mint_realtime_session
+from app.services.coach import (
+    URGENT_MESSAGE,
+    append_event,
+    commit_capture,
+    create_live_session,
+    discard_capture,
+    missing_key_error,
+)
+from app.settings import get_settings
 
 router = APIRouter(prefix="/coach", tags=["coach"])
 
@@ -28,8 +38,19 @@ def _capture(db: Session, capture_id: int) -> Capture:
 
 
 @router.post("/session")
-def create_session(db: Session = Depends(get_db)):
-    return mint_realtime_session(db)
+async def create_session(request: Request, db: Session = Depends(get_db)):
+    if not get_settings().openai_api_key:
+        raise missing_key_error()
+    raw = await request.body()
+    payload = json.loads(raw) if raw else {}
+    if not isinstance(payload, dict):
+        raise HTTPException(status_code=400, detail="An SDP offer is required.")
+    if payload.get("probe"):
+        return {"ready": True}
+    sdp = str(payload.get("sdp") or "")
+    if not sdp.strip():
+        raise HTTPException(status_code=400, detail="An SDP offer is required.")
+    return create_live_session(db, sdp)
 
 
 @router.get("/sessions/{session_id}")

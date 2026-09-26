@@ -94,6 +94,44 @@ COACH_TOOLS = [
 ]
 
 
+LIVE_STYLE = """
+You are the Mosaiva voice coach. Speak in short, plain sentences. This is voice only.
+You do not diagnose, prescribe, or give doses.
+Delegate to the backend when you need to record an observation, log how an intervention feels, propose a hypothesis or intervention, confirm a save, or flag an emergency.
+Ask for a clear spoken yes before confirming a save. The patient can also confirm on screen.
+If they mention chest pain, trouble breathing, fainting, suicidal thoughts, or rapidly worsening neurological symptoms, delegate flag_urgent immediately and stop coaching.
+""".strip()
+
+
+def _strict_tools() -> list[dict]:
+    tools = []
+    for tool in COACH_TOOLS:
+        parameters = dict(tool["parameters"])
+        parameters["additionalProperties"] = False
+        tools.append({**tool, "parameters": parameters})
+    return tools
+
+
+def live_session_request(sdp: str, backend_instructions: str, live_model: str, reasoning_model: str) -> dict:
+    return {
+        "session": {
+            "model": live_model,
+            "instructions": LIVE_STYLE,
+            "audio": {"output": {"voice": "marin"}},
+            "delegation": {
+                "type": "responses",
+                "responses": {
+                    "model": reasoning_model,
+                    "instructions": backend_instructions,
+                    "tools": _strict_tools(),
+                    "tool_choice": "auto",
+                },
+            },
+        },
+        "transport": {"type": "webrtc", "sdp": sdp},
+    }
+
+
 def coach_instructions(db: Session) -> str:
     hypotheses = list(db.scalars(select(Hypothesis).order_by(Hypothesis.id)).all())
     interventions = list(db.scalars(select(Intervention).order_by(Intervention.id)).all())
@@ -124,57 +162,51 @@ Interventions:
 """.strip()
 
 
-def mint_realtime_session(db: Session) -> dict:
+def missing_key_error() -> HTTPException:
+    return HTTPException(
+        status_code=503,
+        detail="Voice coaching needs an OpenAI API key on this machine. There is no text fallback.",
+    )
+
+
+def create_live_session(db: Session, sdp: str) -> dict:
     settings = get_settings()
     if not settings.openai_api_key:
-        raise HTTPException(
-            status_code=503,
-            detail="Voice coaching needs an OpenAI API key on this machine. There is no text fallback.",
-        )
-    payload = {
-        "expires_after": {"anchor": "created_at", "seconds": 600},
-        "session": {
-            "type": "realtime",
-            "model": settings.openai_realtime_model,
-            "instructions": coach_instructions(db),
-            "tools": COACH_TOOLS,
-            "tool_choice": "auto",
-            "audio": {
-                "input": {
-                    "transcription": {"model": "gpt-4o-mini-transcribe"},
-                    "turn_detection": {"type": "server_vad"},
-                },
-                "output": {"voice": "marin"},
-            },
-        },
-    }
+        raise missing_key_error()
+    request_body = live_session_request(
+        sdp,
+        coach_instructions(db),
+        settings.openai_live_model,
+        settings.openai_reasoning_model,
+    )
     try:
         response = httpx.post(
-            "https://api.openai.com/v1/realtime/client_secrets",
+            "https://api.openai.com/v1/live/sessions",
             headers={
                 "Authorization": f"Bearer {settings.openai_api_key}",
                 "Content-Type": "application/json",
             },
-            json=payload,
-            timeout=30,
+            json=request_body,
+            timeout=45,
         )
     except httpx.HTTPError as exc:
-        raise HTTPException(status_code=502, detail="Live voice could not be reached.") from exc
+        raise HTTPException(status_code=502, detail="GPT-Live could not be reached.") from exc
     if response.status_code >= 400:
-        raise HTTPException(status_code=502, detail="Live voice could not be started.")
+        raise HTTPException(status_code=502, detail="GPT-Live could not be started.")
     body = response.json()
-    secret = body.get("value") or body.get("client_secret", {}).get("value")
-    if not secret:
-        raise HTTPException(status_code=502, detail="Live voice did not return a session secret.")
+    answer = (body.get("transport") or {}).get("sdp")
+    live_id = (body.get("session") or {}).get("id")
+    if not answer:
+        raise HTTPException(status_code=502, detail="GPT-Live did not return a connection answer.")
     session = CoachSession(status="active", transcript=[], urgent=False)
     db.add(session)
     db.commit()
     db.refresh(session)
     return {
         "session_id": session.id,
-        "client_secret": secret,
-        "expires_at": body.get("expires_at"),
-        "model": settings.openai_realtime_model,
+        "live_session_id": live_id,
+        "transport": {"type": "webrtc", "sdp": answer},
+        "model": settings.openai_live_model,
     }
 
 
@@ -182,10 +214,13 @@ def append_event(db: Session, session: CoachSession, event) -> dict:
     urgent = False
     capture = None
     if event.kind == "transcript":
-        if not event.text or not event.role:
+        if event.text is None or not event.role:
             raise HTTPException(status_code=422, detail="A transcript line needs a role and text.")
-        transcript = list(session.transcript or [])
-        transcript.append({"role": event.role, "text": event.text})
+        transcript = [dict(line) for line in (session.transcript or [])]
+        if transcript and transcript[-1].get("role") == event.role:
+            transcript[-1]["text"] = f"{transcript[-1].get('text', '')}{event.text}"
+        else:
+            transcript.append({"role": event.role, "text": event.text})
         session.transcript = transcript
     elif event.kind == "tool":
         if not event.tool_name:

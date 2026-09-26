@@ -1,27 +1,58 @@
 type VoiceHandle = {
   stop: () => void;
   send: (event: unknown) => void;
+  flush: () => void;
 };
 
-type ServerEvent = {
+export type LiveServerEvent = {
   type?: string;
-  name?: string;
-  arguments?: string;
-  call_id?: string;
-  transcript?: string;
   delta?: string;
+  event?: {
+    type?: string;
+    item?: {
+      type?: string;
+      name?: string;
+      arguments?: string;
+      call_id?: string;
+    };
+  };
 };
+
+type OpenedSession = {
+  session_id: number;
+  transport: { sdp: string };
+};
+
+function waitForIce(connection: RTCPeerConnection): Promise<void> {
+  if (connection.iceGatheringState === "complete") {
+    return Promise.resolve();
+  }
+  return new Promise((resolve, reject) => {
+    const timeout = window.setTimeout(() => {
+      connection.removeEventListener("icegatheringstatechange", onState);
+      reject(new Error("Timed out while gathering ICE candidates."));
+    }, 10_000);
+    function onState() {
+      if (connection.iceGatheringState !== "complete") return;
+      window.clearTimeout(timeout);
+      connection.removeEventListener("icegatheringstatechange", onState);
+      resolve();
+    }
+    connection.addEventListener("icegatheringstatechange", onState);
+  });
+}
 
 export async function connectVoice(
-  clientSecret: string,
-  onServerEvent: (event: ServerEvent) => void,
-): Promise<VoiceHandle> {
+  openSession: (sdp: string) => Promise<OpenedSession>,
+  onServerEvent: (event: LiveServerEvent) => void,
+): Promise<VoiceHandle & { sessionId: number }> {
   const peer = new RTCPeerConnection();
   const audio = new Audio();
   audio.autoplay = true;
-  peer.ontrack = (event) => {
-    audio.srcObject = event.streams[0];
-  };
+  peer.addEventListener("track", (event) => {
+    audio.srcObject = new MediaStream([event.track]);
+    audio.play().catch(() => undefined);
+  });
 
   let mic: MediaStream;
   try {
@@ -30,55 +61,80 @@ export async function connectVoice(
     peer.close();
     throw new Error("Microphone permission is required for voice coaching.");
   }
-  for (const track of mic.getTracks()) {
+  for (const track of mic.getAudioTracks()) {
     peer.addTrack(track, mic);
   }
 
+  let cleaned = false;
+  const cleanup = () => {
+    if (cleaned) return;
+    cleaned = true;
+    mic.getTracks().forEach((track) => track.stop());
+    channel.close();
+    peer.close();
+    audio.srcObject = null;
+  };
+
   const channel = peer.createDataChannel("oai-events");
-  channel.onmessage = (message) => {
+  const queued: LiveServerEvent[] = [];
+  let deliver = false;
+  channel.addEventListener("message", (message) => {
     try {
-      onServerEvent(JSON.parse(message.data) as ServerEvent);
+      const event = JSON.parse(message.data) as LiveServerEvent;
+      if (event.type === "session.closed") {
+        cleanup();
+      }
+      if (deliver) {
+        onServerEvent(event);
+      } else {
+        queued.push(event);
+      }
     } catch {
       /* ignore non-json events */
     }
-  };
-
-  const offer = await peer.createOffer();
-  await peer.setLocalDescription(offer);
-  const response = await fetch("https://api.openai.com/v1/realtime/calls", {
-    method: "POST",
-    body: offer.sdp,
-    headers: {
-      Authorization: `Bearer ${clientSecret}`,
-      "Content-Type": "application/sdp",
-    },
   });
-  if (!response.ok) {
-    mic.getTracks().forEach((track) => track.stop());
-    peer.close();
-    throw new Error("Live voice connection failed.");
-  }
-  const answer = await response.text();
-  await peer.setRemoteDescription({ type: "answer", sdp: answer });
 
-  return {
-    send: (event: unknown) => {
-      if (channel.readyState === "open") {
-        channel.send(JSON.stringify(event));
-      }
-    },
-    stop: () => {
-      channel.close();
-      mic.getTracks().forEach((track) => track.stop());
-      peer.close();
-      audio.srcObject = null;
-    },
-  };
+  try {
+    const offer = await peer.createOffer();
+    await peer.setLocalDescription(offer);
+    await waitForIce(peer);
+    const sdp = peer.localDescription?.sdp;
+    if (!sdp) {
+      throw new Error("Missing local SDP offer.");
+    }
+    const opened = await openSession(sdp);
+    await peer.setRemoteDescription({ type: "answer", sdp: opened.transport.sdp });
+    return {
+      sessionId: opened.session_id,
+      send: (event: unknown) => {
+        if (channel.readyState === "open") {
+          channel.send(JSON.stringify(event));
+        }
+      },
+      flush: () => {
+        deliver = true;
+        for (const event of queued.splice(0)) {
+          onServerEvent(event);
+        }
+      },
+      stop: () => {
+        if (channel.readyState === "open") {
+          channel.send(JSON.stringify({ type: "session.close" }));
+          window.setTimeout(cleanup, 4000);
+          return;
+        }
+        cleanup();
+      },
+    };
+  } catch (error) {
+    cleanup();
+    throw error;
+  }
 }
 
-export function functionReply(callId: string, output: string) {
+export function functionResult(callId: string, output: string) {
   return {
-    type: "conversation.item.create",
+    type: "response.item.create",
     item: {
       type: "function_call_output",
       call_id: callId,

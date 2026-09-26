@@ -16,6 +16,39 @@ def test_voice_session_without_a_key_is_an_error(client):
     assert "text fallback" in response.json()["detail"].lower()
 
 
+def test_gpt_live_session_uses_terra_for_tools():
+    from app.services.coach import live_session_request
+
+    request = live_session_request("v=0\r\n", "Record what the patient says.", "gpt-live-1", "gpt-5.6-terra")
+    assert request["session"]["model"] == "gpt-live-1"
+    assert request["transport"] == {"type": "webrtc", "sdp": "v=0\r\n"}
+    backend = request["session"]["delegation"]["responses"]
+    assert backend["model"] == "gpt-5.6-terra"
+    assert backend["tool_choice"] == "auto"
+    names = {tool["name"] for tool in backend["tools"]}
+    assert "record_observation" in names
+    assert "flag_urgent" in names
+
+
+def test_terra_response_text_is_read_from_output_items():
+    from app.services.llm import response_output_text, responses_request
+
+    body = responses_request("gpt-5.6-terra", "Return JSON.", {"question": "why"})
+    assert body["model"] == "gpt-5.6-terra"
+    assert body["text"]["format"]["type"] == "json_object"
+    text = response_output_text(
+        {
+            "output": [
+                {
+                    "type": "message",
+                    "content": [{"type": "output_text", "text": '{"relevance_note":"Related."}'}],
+                }
+            ]
+        }
+    )
+    assert "relevance_note" in text
+
+
 def test_pending_capture_commits_only_after_confirmation(client):
     from app.db import SessionLocal
     from app.models import CoachSession

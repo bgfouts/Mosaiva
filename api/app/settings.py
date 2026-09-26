@@ -17,8 +17,8 @@ class Settings(BaseSettings):
 
     mosaiva_database_url: str = ""
     openai_api_key: str = ""
-    openai_realtime_model: str = "gpt-realtime"
-    openai_reasoning_model: str = "gpt-4.1"
+    openai_live_model: str = "gpt-live-1"
+    openai_reasoning_model: str = "gpt-5.6-terra"
     mosaiva_research_fixture: str = ""
     mosaiva_mosaic_fixture: bool = False
 

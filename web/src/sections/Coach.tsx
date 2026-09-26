@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { api } from "../api";
 import { Capture, CoachSession } from "../types";
-import { connectVoice, functionReply } from "../voice";
+import { connectVoice, functionResult, LiveServerEvent } from "../voice";
 
 export function Coach() {
   const [session, setSession] = useState<CoachSession | null>(null);
@@ -18,13 +18,25 @@ export function Coach() {
     setError("");
     setUrgent("");
     try {
-      const minted = await api<{ session_id: number; client_secret: string }>("/api/coach/session", {
-        method: "POST",
-      });
-      await refresh(minted.session_id);
-      const connection = await connectVoice(minted.client_secret, (event) => {
-        void onRealtimeEvent(minted.session_id, event, connection.send);
-      });
+      await api("/api/coach/session", { method: "POST", body: JSON.stringify({ probe: true }) });
+      const bridge: { sessionId: number; send: (event: unknown) => void } = {
+        sessionId: 0,
+        send: () => undefined,
+      };
+      const connection = await connectVoice(
+        (sdp) =>
+          api<{ session_id: number; transport: { sdp: string } }>("/api/coach/session", {
+            method: "POST",
+            body: JSON.stringify({ sdp }),
+          }),
+        (event) => {
+          void onLiveEvent(bridge.sessionId, event, bridge.send);
+        },
+      );
+      bridge.sessionId = connection.sessionId;
+      bridge.send = connection.send;
+      connection.flush();
+      await refresh(connection.sessionId);
       setHandle(connection);
       setLive(true);
     } catch (err) {
@@ -33,29 +45,27 @@ export function Coach() {
     }
   }
 
-  async function onRealtimeEvent(
-    sessionId: number,
-    event: { type?: string; transcript?: string; name?: string; arguments?: string; call_id?: string },
-    send: (payload: unknown) => void,
-  ) {
-    if (event.type === "conversation.item.input_audio_transcription.completed" && event.transcript) {
+  async function onLiveEvent(sessionId: number, event: LiveServerEvent, send: (payload: unknown) => void) {
+    if (event.type === "session.input_transcript.delta" && event.delta) {
       await api(`/api/coach/sessions/${sessionId}/events`, {
         method: "POST",
-        body: JSON.stringify({ kind: "transcript", role: "patient", text: event.transcript }),
+        body: JSON.stringify({ kind: "transcript", role: "patient", text: event.delta }),
       });
       await refresh(sessionId);
     }
-    if (event.type === "response.output_audio_transcript.done" && event.transcript) {
+    if (event.type === "session.output_transcript.delta" && event.delta) {
       await api(`/api/coach/sessions/${sessionId}/events`, {
         method: "POST",
-        body: JSON.stringify({ kind: "transcript", role: "coach", text: event.transcript }),
+        body: JSON.stringify({ kind: "transcript", role: "coach", text: event.delta }),
       });
       await refresh(sessionId);
     }
-    if (event.type === "response.function_call_arguments.done" && event.name && event.call_id) {
+    const nested = event.type === "response.event" ? event.event : undefined;
+    const item = nested?.type === "response.output_item.done" ? nested.item : undefined;
+    if (item?.type === "function_call" && item.name && item.call_id) {
       let payload: Record<string, unknown> = {};
       try {
-        payload = JSON.parse(event.arguments || "{}") as Record<string, unknown>;
+        payload = JSON.parse(item.arguments || "{}") as Record<string, unknown>;
       } catch {
         payload = {};
       }
@@ -63,13 +73,13 @@ export function Coach() {
         `/api/coach/sessions/${sessionId}/events`,
         {
           method: "POST",
-          body: JSON.stringify({ kind: "tool", tool_name: event.name, payload, call_id: event.call_id }),
+          body: JSON.stringify({ kind: "tool", tool_name: item.name, payload, call_id: item.call_id }),
         },
       );
       if (result.urgent && result.urgent_message) {
         setUrgent(result.urgent_message);
       }
-      send(functionReply(event.call_id, JSON.stringify({ status: "recorded", urgent: result.urgent })));
+      send(functionResult(item.call_id, JSON.stringify({ status: "recorded", urgent: result.urgent })));
       send({ type: "response.create" });
       await refresh(sessionId);
     }
