@@ -42,9 +42,15 @@ export function Interventions() {
     ]);
     setRows(
       [...interventions].sort((a, b) => {
-        const aCost = a.status === "active" && a.net_value !== null && a.net_value < 0 ? a.net_value : 1;
-        const bCost = b.status === "active" && b.net_value !== null && b.net_value < 0 ? b.net_value : 1;
-        return aCost - bCost;
+        const rank = (row: Intervention) => {
+          if (row.status === "active" && row.net_value !== null && row.net_value < 0) return 0;
+          if (row.status === "active") return 1;
+          return 2;
+        };
+        const byRank = rank(a) - rank(b);
+        if (byRank !== 0) return byRank;
+        if (rank(a) === 0) return (a.net_value ?? 0) - (b.net_value ?? 0);
+        return a.position - b.position || a.id - b.id;
       }),
     );
     setHypotheses(ideas);
@@ -115,7 +121,10 @@ export function Interventions() {
     <section>
       <header className="section-head">
         <h2>Interventions</h2>
-        <p>Medicines, food, and routines you are actually using. Costly, low-yield items rise to the top.</p>
+        <p>
+          Potential changes, questions for a clinician, and anything you are already using. A medicine is named
+          only as a question, with no dose, and is not an instruction to start or change it on your own.
+        </p>
       </header>
       {error && <p className="alert">{error}</p>}
       <form className="card form" onSubmit={onSubmit}>
@@ -149,6 +158,7 @@ export function Interventions() {
                 })
               }
             >
+              <option value="potential">Potential</option>
               <option value="active">Active</option>
               <option value="paused">Paused</option>
               <option value="stopped">Stopped</option>
@@ -169,7 +179,10 @@ export function Interventions() {
           </div>
         )}
         {form.status === "ask_clinician" && (
-          <p className="note">This names a medicine to ask about. It cannot include a dose, and it is not an instruction to start it.</p>
+          <p className="note">
+            This is a question for a clinician. It cannot include a dose, and it is not an instruction to start or
+            change a medicine on your own.
+          </p>
         )}
         <label className="check">
           <input
@@ -258,7 +271,9 @@ export function Interventions() {
           <article key={row.id} className="card">
             <div className="card-top">
               <h3>{row.name}</h3>
-              <span className="pill">{row.status === "ask_clinician" ? "Ask a clinician" : row.status}</span>
+              <span className="pill">
+                {row.status === "ask_clinician" ? "Ask a clinician" : row.status === "potential" ? "Potential" : row.status}
+              </span>
             </div>
             <p className="meta">
               {row.category}
@@ -270,8 +285,11 @@ export function Interventions() {
               Benefit {row.benefit ?? "—"} · Side-effect burden {row.side_effect_burden ?? "—"}
               {row.net_value !== null ? ` · Net ${row.net_value}` : ""}
             </p>
-            {row.status === "ask_clinician" && (
-              <p className="note">Ask your clinician about this. Do not start it on your own.</p>
+            {row.status === "ask_clinician" && row.category === "medication" && (
+              <p className="note">Ask your clinician before starting or changing this. Do not do it on your own.</p>
+            )}
+            {row.status === "ask_clinician" && row.category !== "medication" && (
+              <p className="note">Ask your clinician about this. It is not a treatment to start on your own.</p>
             )}
             {row.clinician_task && <p className="note">{row.clinician_task}</p>}
             {row.side_effect_notes && <p>{row.side_effect_notes}</p>}

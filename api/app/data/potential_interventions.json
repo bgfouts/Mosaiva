@@ -1,0 +1,202 @@
+[
+  {
+    "name": "Start Ajovy (30-day injectable)",
+    "category": "medication",
+    "status": "ask_clinician",
+    "clinician_prescribed": false,
+    "clinician_task": "Ask your clinician about starting Ajovy, a 30-day injectable. Do not start it on your own.",
+    "hypothesis_titles": [
+      "Migraine-spectrum disorder / silent migraine",
+      "Migraine with prominent hypothalamic/autonomic involvement"
+    ]
+  },
+  {
+    "name": "Taper verapamil",
+    "category": "medication",
+    "status": "ask_clinician",
+    "clinician_prescribed": true,
+    "clinician_task": "Ask your clinician about tapering verapamil. Do not stop or change it on your own.",
+    "hypothesis_titles": [
+      "Medication / drug-interaction effects",
+      "POTS / dysautonomia / orthostatic intolerance"
+    ]
+  },
+  {
+    "name": "Reduce Luvox from 150 mg to 100 mg",
+    "category": "medication",
+    "status": "ask_clinician",
+    "clinician_prescribed": true,
+    "clinician_task": "Ask your clinician about reducing Luvox from 150 mg to 100 mg. Do not change this dose on your own.",
+    "hypothesis_titles": ["Medication / drug-interaction effects"]
+  },
+  {
+    "name": "Urine culture to rule out a cryptic UTI",
+    "category": "therapy",
+    "status": "ask_clinician",
+    "clinician_prescribed": false,
+    "clinician_task": "Ask your clinician for a urine culture to look for a cryptic UTI.",
+    "hypothesis_titles": ["Recurrent/occult UTI or other infection"]
+  },
+  {
+    "name": "Stop morning magnesium threonate",
+    "category": "supplement",
+    "status": "potential",
+    "clinician_prescribed": false,
+    "schedule": "Morning",
+    "side_effect_notes": "Potential change: stop morning magnesium threonate. Do this on your own only if a clinician did not prescribe it."
+  },
+  {
+    "name": "No yogurt — low-histamine diet again",
+    "category": "diet",
+    "status": "potential",
+    "clinician_prescribed": false,
+    "side_effect_notes": "Potential change: stop yogurt and return to a low-histamine diet.",
+    "hypothesis_titles": ["Histamine as a migraine/autonomic trigger"]
+  },
+  {
+    "name": "Sleep study",
+    "category": "therapy",
+    "status": "ask_clinician",
+    "clinician_prescribed": false,
+    "clinician_task": "Ask your clinician about a sleep study.",
+    "hypothesis_titles": [
+      "Primary sleep disorder — especially OSA/UARS",
+      "Idiopathic hypersomnia (IH)"
+    ]
+  },
+  {
+    "name": "Increase Vyvanse",
+    "category": "medication",
+    "status": "ask_clinician",
+    "clinician_prescribed": true,
+    "clinician_task": "Ask your clinician about increasing Vyvanse. Do not change the dose on your own.",
+    "hypothesis_titles": [
+      "Medication / drug-interaction effects",
+      "Idiopathic hypersomnia (IH)"
+    ]
+  },
+  {
+    "name": "Nasal irrigation / Afrin",
+    "category": "medication",
+    "status": "ask_clinician",
+    "clinician_prescribed": false,
+    "clinician_task": "Ask your clinician before using Afrin. Do not start it on your own. Nasal irrigation is listed with it.",
+    "hypothesis_titles": ["Primary sleep disorder — especially OSA/UARS"]
+  },
+  {
+    "name": "Blue-blocker amber glasses",
+    "category": "lifestyle",
+    "status": "potential",
+    "clinician_prescribed": false,
+    "hypothesis_titles": ["Migraine-spectrum disorder / silent migraine"]
+  },
+  {
+    "name": "Melatonin circadian reset for an earlier bedtime",
+    "category": "supplement",
+    "status": "potential",
+    "clinician_prescribed": false,
+    "side_effect_notes": "Potential change: use melatonin to shift toward an earlier bedtime. No dose is stored here."
+  },
+  {
+    "name": "More outdoor time, walking, and gentle movement",
+    "category": "lifestyle",
+    "status": "potential",
+    "clinician_prescribed": false,
+    "side_effect_notes": "Potential change: more outdoor time, walking, and gentle movement to prevent deconditioning and set circadian rhythms."
+  },
+  {
+    "name": "Retest vitamins, thyroid, and autoimmune panels, especially Sjögren's",
+    "category": "therapy",
+    "status": "ask_clinician",
+    "clinician_prescribed": false,
+    "clinician_task": "Ask your clinician to retest vitamins, thyroid, and autoimmune panels, especially Sjögren's.",
+    "hypothesis_titles": [
+      "Hypothyroidism",
+      "Systemic autoimmune disease — lupus/Sjögren's/etc.",
+      "Iron/B12/vitamin-D deficiency or anemia"
+    ]
+  },
+  {
+    "name": "GLP-1",
+    "category": "medication",
+    "status": "ask_clinician",
+    "clinician_prescribed": false,
+    "clinician_task": "Ask your clinician about a GLP-1 medicine. Do not start it on your own."
+  },
+  {
+    "name": "Eye recheck — pursue more BVD treatment",
+    "category": "therapy",
+    "status": "ask_clinician",
+    "clinician_prescribed": false,
+    "clinician_task": "Ask for an eye recheck and whether to pursue more binocular-vision treatment.",
+    "hypothesis_titles": ["Binocular vision dysfunction / ocular motor problem"]
+  },
+  {
+    "name": "Consistent hydration and electrolytes",
+    "category": "diet",
+    "status": "potential",
+    "clinician_prescribed": false,
+    "hypothesis_titles": ["POTS / dysautonomia / orthostatic intolerance"]
+  },
+  {
+    "name": "Consistent meals",
+    "category": "diet",
+    "status": "potential",
+    "clinician_prescribed": false
+  },
+  {
+    "name": "Over-the-counter sleep apnea interventions",
+    "category": "lifestyle",
+    "status": "potential",
+    "clinician_prescribed": false,
+    "side_effect_notes": "Potential non-prescription ideas. This is not a substitute for a sleep study or a prescribed treatment.",
+    "hypothesis_titles": ["Primary sleep disorder — especially OSA/UARS"]
+  },
+  {
+    "name": "Upgrade Apple Watch and/or Oura Ring",
+    "category": "lifestyle",
+    "status": "potential",
+    "clinician_prescribed": false,
+    "side_effect_notes": "For better sleep apnea detection, and more data, especially temperature, for tracking circadian rhythm changes.",
+    "hypothesis_titles": ["Primary sleep disorder — especially OSA/UARS"]
+  },
+  {
+    "name": "Sleep in on Wednesdays",
+    "category": "lifestyle",
+    "status": "potential",
+    "clinician_prescribed": false,
+    "schedule": "Wednesdays"
+  },
+  {
+    "name": "Migraine, sensory, and burnout recovery",
+    "category": "lifestyle",
+    "status": "potential",
+    "clinician_prescribed": false,
+    "side_effect_notes": "Dim lights, low sound, and low demand.",
+    "hypothesis_titles": [
+      "Migraine-spectrum disorder / silent migraine",
+      "Psychiatric stress / autistic-ADHD burnout"
+    ]
+  },
+  {
+    "name": "Burnout recovery — more special-interest time",
+    "category": "lifestyle",
+    "status": "potential",
+    "clinician_prescribed": false,
+    "side_effect_notes": "More time on special interests.",
+    "hypothesis_titles": ["Psychiatric stress / autistic-ADHD burnout"]
+  },
+  {
+    "name": "Earlier bedtime",
+    "category": "lifestyle",
+    "status": "potential",
+    "clinician_prescribed": false
+  },
+  {
+    "name": "Avoid heat",
+    "category": "lifestyle",
+    "status": "potential",
+    "clinician_prescribed": false,
+    "hypothesis_titles": ["POTS / dysautonomia / orthostatic intolerance"]
+  }
+]

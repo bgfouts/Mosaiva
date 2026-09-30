@@ -63,6 +63,10 @@ def _ensure_hypothesis_columns(engine: Engine) -> None:
         for column, ddl in additions.items():
             if column not in names:
                 conn.exec_driver_sql(f"ALTER TABLE hypotheses ADD COLUMN {column} {ddl}")
+        intervention_rows = conn.exec_driver_sql("PRAGMA table_info(interventions)").fetchall()
+        intervention_names = {row[1] for row in intervention_rows}
+        if "position" not in intervention_names:
+            conn.exec_driver_sql("ALTER TABLE interventions ADD COLUMN position INTEGER DEFAULT 0")
 
 
 def open_session() -> Session:

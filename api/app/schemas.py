@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field, model_validator
 
 HypothesisStatus = Literal["active", "parked", "refuted", "supported"]
 InterventionCategory = Literal["medication", "lifestyle", "diet", "supplement", "therapy"]
-InterventionStatus = Literal["active", "paused", "stopped", "ask_clinician"]
+InterventionStatus = Literal["active", "paused", "stopped", "ask_clinician", "potential"]
 
 
 class HypothesisIn(BaseModel):

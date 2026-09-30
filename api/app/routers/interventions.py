@@ -8,7 +8,7 @@ from app.db import get_db
 from app.models import Intervention
 from app.schemas import InterventionIn, InterventionPatch
 from app.serialize import intervention_dict
-from app.services.records import assert_intervention_rules, load_hypotheses
+from app.services.records import assert_intervention_rules, load_hypotheses, next_intervention_position
 
 router = APIRouter(prefix="/interventions", tags=["interventions"])
 
@@ -27,7 +27,9 @@ def _get(db: Session, intervention_id: int) -> Intervention:
 @router.get("")
 def list_interventions(db: Session = Depends(get_db)):
     rows = db.scalars(
-        select(Intervention).options(selectinload(Intervention.hypotheses)).order_by(Intervention.updated_at.desc())
+        select(Intervention)
+        .options(selectinload(Intervention.hypotheses))
+        .order_by(Intervention.position.asc(), Intervention.id.asc())
     ).all()
     return [intervention_dict(row) for row in rows]
 
@@ -46,6 +48,7 @@ def create_intervention(body: InterventionIn, db: Session = Depends(get_db)):
         benefit=body.benefit,
         side_effect_burden=body.side_effect_burden,
         side_effect_notes=body.side_effect_notes.strip(),
+        position=next_intervention_position(db),
     )
     item.hypotheses = load_hypotheses(db, body.hypothesis_ids)
     assert_intervention_rules(item)

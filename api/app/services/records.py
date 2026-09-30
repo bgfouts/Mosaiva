@@ -56,6 +56,13 @@ def next_hypothesis_position(db: Session) -> int:
     return int(current) + 1
 
 
+def next_intervention_position(db: Session) -> int:
+    from sqlalchemy import func
+
+    current = db.scalar(select(func.max(Intervention.position))) or 0
+    return int(current) + 1
+
+
 def assert_intervention_rules(item: Intervention) -> None:
     if item.status == "ask_clinician" and (item.dose or "").strip():
         raise HTTPException(

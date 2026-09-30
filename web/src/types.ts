@@ -27,9 +27,10 @@ export type Intervention = {
   name: string;
   category: "medication" | "lifestyle" | "diet" | "supplement" | "therapy";
   dose: string;
+  position: number;
   schedule: string;
   clinician_prescribed: boolean;
-  status: "active" | "paused" | "stopped" | "ask_clinician";
+  status: "active" | "paused" | "stopped" | "ask_clinician" | "potential";
   start_date: string | null;
   stop_date: string | null;
   benefit: number | null;

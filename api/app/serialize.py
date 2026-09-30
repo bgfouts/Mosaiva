@@ -42,6 +42,7 @@ def intervention_dict(item: Intervention) -> dict:
         "name": item.name,
         "category": item.category,
         "dose": item.dose or "",
+        "position": item.position or 0,
         "schedule": item.schedule or "",
         "clinician_prescribed": item.clinician_prescribed,
         "status": item.status,

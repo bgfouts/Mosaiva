@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     mosaiva_research_fixture: str = ""
     mosaiva_mosaic_fixture: bool = False
     mosaiva_seed_hypotheses: bool = True
+    mosaiva_seed_interventions: bool = True
 
     @property
     def database_url(self) -> str:
