@@ -43,14 +43,37 @@ def get_engine() -> Engine:
 def init_db() -> None:
     from app import models  # noqa: F401
 
-    Base.metadata.create_all(get_engine())
+    engine = get_engine()
+    Base.metadata.create_all(engine)
+    _ensure_hypothesis_columns(engine)
 
 
-def get_db() -> Generator[Session, None, None]:
+def _ensure_hypothesis_columns(engine: Engine) -> None:
+    if engine.dialect.name != "sqlite":
+        return
+    with engine.begin() as conn:
+        rows = conn.exec_driver_sql("PRAGMA table_info(hypotheses)").fetchall()
+        names = {row[1] for row in rows}
+        additions = {
+            "why_it_fits": "TEXT DEFAULT ''",
+            "confidence": "TEXT DEFAULT ''",
+            "likely_role": "TEXT DEFAULT ''",
+            "position": "INTEGER DEFAULT 0",
+        }
+        for column, ddl in additions.items():
+            if column not in names:
+                conn.exec_driver_sql(f"ALTER TABLE hypotheses ADD COLUMN {column} {ddl}")
+
+
+def open_session() -> Session:
     if SessionLocal is None:
         get_engine()
     assert SessionLocal is not None
-    db = SessionLocal()
+    return SessionLocal()
+
+
+def get_db() -> Generator[Session, None, None]:
+    db = open_session()
     try:
         yield db
     finally:

@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     openai_reasoning_model: str = "gpt-5.6-terra"
     mosaiva_research_fixture: str = ""
     mosaiva_mosaic_fixture: bool = False
+    mosaiva_seed_hypotheses: bool = True
 
     @property
     def database_url(self) -> str:

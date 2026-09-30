@@ -11,14 +11,20 @@ InterventionStatus = Literal["active", "paused", "stopped", "ask_clinician"]
 class HypothesisIn(BaseModel):
     title: str = Field(min_length=1, max_length=200)
     statement: str = ""
+    why_it_fits: str = ""
+    confidence: str = ""
+    likely_role: str = ""
     domains: list[str] = []
     status: HypothesisStatus = "active"
-    probability: float = 0.5
+    probability: float | None = None
 
 
 class HypothesisPatch(BaseModel):
     title: str | None = Field(default=None, min_length=1, max_length=200)
     statement: str | None = None
+    why_it_fits: str | None = None
+    confidence: str | None = None
+    likely_role: str | None = None
     domains: list[str] | None = None
     status: HypothesisStatus | None = None
     probability: float | None = None

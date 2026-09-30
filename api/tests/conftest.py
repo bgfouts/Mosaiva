@@ -9,6 +9,7 @@ def client(tmp_path, monkeypatch):
     monkeypatch.setenv("MOSAIVA_MOSAIC_FIXTURE", "1")
     monkeypatch.setenv("MOSAIVA_RESEARCH_FIXTURE", "")
     monkeypatch.setenv("MOSAIVA_DISABLE_LIVE_SEARCH", "1")
+    monkeypatch.setenv("MOSAIVA_SEED_HYPOTHESES", "0")
     from app.db import reset_engine
     from app.settings import get_settings
 

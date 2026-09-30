@@ -3,8 +3,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.db import init_db
+from app.db import init_db, open_session
 from app.routers import coach, hypotheses, interventions, mosaic, research, settings
+from app.services.seed import seed_hypotheses
 from app.settings import DATA_DIR, PAPERS_DIR
 
 
@@ -13,6 +14,11 @@ async def lifespan(_app: FastAPI):
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     PAPERS_DIR.mkdir(parents=True, exist_ok=True)
     init_db()
+    db = open_session()
+    try:
+        seed_hypotheses(db)
+    finally:
+        db.close()
     yield
 
 

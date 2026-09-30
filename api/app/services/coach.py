@@ -6,7 +6,12 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models import Capture, CoachSession, Evidence, Hypothesis, Intervention
-from app.services.records import assert_intervention_rules, clamp_probability
+from app.services.records import (
+    assert_intervention_rules,
+    clamp_probability,
+    confidence_to_probability,
+    next_hypothesis_position,
+)
 from app.settings import get_settings
 
 URGENT_MESSAGE = (
@@ -48,12 +53,15 @@ COACH_TOOLS = [
     {
         "type": "function",
         "name": "propose_hypothesis",
-        "description": "Propose a new working hypothesis. It is not a diagnosis and stays pending until the patient confirms.",
+        "description": "Propose a new working hypothesis. It is not a diagnosis and stays pending until the patient confirms. Use a qualitative confidence label and a likely role, not a diagnosis.",
         "parameters": {
             "type": "object",
             "properties": {
                 "title": {"type": "string"},
                 "statement": {"type": "string"},
+                "why_it_fits": {"type": "string"},
+                "confidence": {"type": "string"},
+                "likely_role": {"type": "string"},
                 "domains": {"type": "array", "items": {"type": "string"}},
                 "probability": {"type": "number"},
             },
@@ -133,10 +141,16 @@ def live_session_request(sdp: str, backend_instructions: str, live_model: str, r
 
 
 def coach_instructions(db: Session) -> str:
-    hypotheses = list(db.scalars(select(Hypothesis).order_by(Hypothesis.id)).all())
+    hypotheses = list(
+        db.scalars(select(Hypothesis).order_by(Hypothesis.position.asc(), Hypothesis.id.asc())).all()
+    )
     interventions = list(db.scalars(select(Intervention).order_by(Intervention.id)).all())
     hypothesis_lines = [
-        f"- id {item.id}: {item.title} (working estimate {item.probability:.0%}, {item.status})"
+        (
+            f"- id {item.id}: {item.title} — confidence {item.confidence or 'unset'}; "
+            f"likely role {item.likely_role or 'unset'} "
+            f"(internal estimate {item.probability:.0%}, {item.status})"
+        )
         for item in hypotheses
     ] or ["- none yet"]
     intervention_lines = [
@@ -330,15 +344,23 @@ def commit_capture(db: Session, capture: Capture) -> Capture:
         if notes:
             intervention.side_effect_notes = notes
     elif capture.tool_name == "propose_hypothesis":
-        probability = payload.get("probability", 0.5)
-        try:
-            probability = float(probability)
-        except (TypeError, ValueError):
-            probability = 0.5
+        confidence = str(payload.get("confidence") or "").strip()
+        raw_probability = payload.get("probability")
+        if raw_probability is None or raw_probability == "":
+            probability = confidence_to_probability(confidence) if confidence else 0.5
+        else:
+            try:
+                probability = float(raw_probability)
+            except (TypeError, ValueError):
+                probability = 0.5
         db.add(
             Hypothesis(
                 title=str(payload["title"]).strip(),
                 statement=str(payload.get("statement") or ""),
+                why_it_fits=str(payload.get("why_it_fits") or "").strip(),
+                confidence=confidence,
+                likely_role=str(payload.get("likely_role") or "").strip(),
+                position=next_hypothesis_position(db),
                 domains=list(payload.get("domains") or []),
                 status="active",
                 probability=clamp_probability(probability),

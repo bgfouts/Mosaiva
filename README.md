@@ -39,7 +39,7 @@ Without a key, Coach shows an error and does not offer typing. Mosaic returns an
 
 ## What each section does
 
-- **Hypotheses.** Add, edit, and remove working estimates. You set the starting probability. Mosaic can move it later, and you can override that.
+- **Hypotheses.** A differential of working theories: description, why it might fit, a qualitative confidence label, and a likely role. Those labels are not diagnoses. Mosaic keeps a separate internal estimate and can move it later.
 - **Interventions.** Medicines, diet, lifestyle, supplements, and therapy, with benefit and side-effect burden. Items you are not taking can be marked “ask a clinician” and cannot store a dose.
 - **Research.** Web search, then a filter: the file must download as a PDF, the host cannot be a paywall bypass, and the journal domain must be on `api/app/data/reputable_journals.json`.
 - **Coach.** Voice only, via GPT-Live. The browser sends its WebRTC offer to this API, which opens the Live session. Tool calls stay pending until you confirm them on screen or with a spoken yes.

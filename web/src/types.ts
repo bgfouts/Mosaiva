@@ -11,6 +11,10 @@ export type Hypothesis = {
   id: number;
   title: string;
   statement: string;
+  why_it_fits: string;
+  confidence: string;
+  likely_role: string;
+  position: number;
   domains: string[];
   status: "active" | "parked" | "refuted" | "supported";
   probability: number;
