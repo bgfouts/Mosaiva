@@ -277,7 +277,11 @@ export function Interventions() {
             </div>
             <p className="meta">
               {row.category}
-              {row.clinician_prescribed ? " · prescribed" : " · self-directed"}
+              {row.clinician_prescribed
+                ? " · prescribed"
+                : row.status === "ask_clinician"
+                  ? ""
+                  : " · self-directed"}
               {row.dose ? ` · ${row.dose}` : ""}
               {row.schedule ? ` · ${row.schedule}` : ""}
             </p>
