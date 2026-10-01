@@ -21,6 +21,7 @@ export type LiveServerEvent = {
 type OpenedSession = {
   session_id: number;
   transport: { sdp: string };
+  visit?: { greeting?: string };
 };
 
 function waitForIce(connection: RTCPeerConnection): Promise<void> {
@@ -45,7 +46,7 @@ function waitForIce(connection: RTCPeerConnection): Promise<void> {
 export async function connectVoice(
   openSession: (sdp: string) => Promise<OpenedSession>,
   onServerEvent: (event: LiveServerEvent) => void,
-): Promise<VoiceHandle & { sessionId: number }> {
+): Promise<VoiceHandle & { sessionId: number; greeting: string }> {
   const peer = new RTCPeerConnection();
   const audio = new Audio();
   audio.autoplay = true;
@@ -106,6 +107,7 @@ export async function connectVoice(
     await peer.setRemoteDescription({ type: "answer", sdp: opened.transport.sdp });
     return {
       sessionId: opened.session_id,
+      greeting: opened.visit?.greeting ?? "",
       send: (event: unknown) => {
         if (channel.readyState === "open") {
           channel.send(JSON.stringify(event));

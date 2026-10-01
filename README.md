@@ -42,7 +42,7 @@ Without a key, Coach shows an error and does not offer typing. Mosaic returns an
 - **Hypotheses.** A differential of working theories: description, why it might fit, a qualitative confidence label, and a likely role. Those labels are not diagnoses. Mosaic keeps a separate internal estimate and can move it later.
 - **Interventions.** Medicines, diet, lifestyle, supplements, and therapy, with benefit and side-effect burden. A potential list is seeded on startup when those names are missing. Medicines in that list are questions for a clinician and cannot store a dose. Diet, supplements, and routines are marked potential rather than already in use.
 - **Research.** Web search, then a filter: the file must download as a PDF, the host cannot be a paywall bypass, and the journal domain must be on `api/app/data/reputable_journals.json`.
-- **Coach.** Voice only, via GPT-Live. The browser sends its WebRTC offer to this API, which opens the Live session. Tool calls stay pending until you confirm them on screen or with a spoken yes.
+- **Coach.** Voice only, via GPT-Live. It opens by asking how you are today, and asks how you have been since last time when that check-in was more than a day ago. While you answer, the backend drafts a few clinical questions. The visit ends after 5 to 7 replies, with a goodbye that it has what it needs for today. Tool calls stay pending until you confirm them.
 - **Mosaic.** One review per local week, in the timezone from the sidebar. It updates working estimates and suggests add, remove, or hold. A second run in the same week returns the same review.
 
 ## Tests

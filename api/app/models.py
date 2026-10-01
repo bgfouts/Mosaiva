@@ -143,6 +143,9 @@ class CoachSession(Base):
     status: Mapped[str] = mapped_column(String(32), default="active")
     transcript: Mapped[list] = mapped_column(JSON, default=list)
     urgent: Mapped[bool] = mapped_column(Boolean, default=False)
+    ask_since_last: Mapped[bool] = mapped_column(Boolean, default=False)
+    plan_status: Mapped[str] = mapped_column(String(32), default="pending")
+    planned_questions: Mapped[list] = mapped_column(JSON, default=list)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
     captures: Mapped[list["Capture"]] = relationship(back_populates="session", cascade="all, delete-orphan")

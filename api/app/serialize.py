@@ -88,6 +88,8 @@ def capture_dict(item: Capture) -> dict:
 
 
 def session_dict(item: CoachSession) -> dict:
+    from app.services.coach import visit_state
+
     captures = sorted(item.captures or [], key=lambda row: row.created_at or 0)
     return {
         "id": item.id,
@@ -96,6 +98,7 @@ def session_dict(item: CoachSession) -> dict:
         "urgent": item.urgent,
         "created_at": item.created_at.isoformat() if item.created_at else None,
         "captures": [capture_dict(row) for row in captures],
+        "visit": visit_state(item),
     }
 
 

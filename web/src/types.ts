@@ -62,12 +62,24 @@ export type Capture = {
   status: "pending" | "committed" | "discarded";
 };
 
+export type Visit = {
+  ask_since_last: boolean;
+  greeting: string;
+  patient_turns: number;
+  cue: "wind_down" | "goodbye" | null;
+  cue_text: string;
+  plan_status: string;
+  questions: string[];
+  questions_context: string;
+};
+
 export type CoachSession = {
   id: number;
   status: string;
   transcript: { role: "patient" | "coach"; text: string }[];
   urgent: boolean;
   captures: Capture[];
+  visit?: Visit;
 };
 
 export type Review = {

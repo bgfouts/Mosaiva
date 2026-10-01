@@ -68,6 +68,7 @@ def post_event(session_id: int, body: CoachEventIn, db: Session = Depends(get_db
         "capture": capture_dict(capture) if capture is not None else None,
         "urgent": result["urgent"],
         "urgent_message": result["urgent_message"] or (URGENT_MESSAGE if result["urgent"] else None),
+        "visit": result["visit"],
     }
 
 

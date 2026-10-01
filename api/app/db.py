@@ -67,6 +67,16 @@ def _ensure_hypothesis_columns(engine: Engine) -> None:
         intervention_names = {row[1] for row in intervention_rows}
         if "position" not in intervention_names:
             conn.exec_driver_sql("ALTER TABLE interventions ADD COLUMN position INTEGER DEFAULT 0")
+        session_rows = conn.exec_driver_sql("PRAGMA table_info(coach_sessions)").fetchall()
+        session_names = {row[1] for row in session_rows}
+        session_additions = {
+            "ask_since_last": "BOOLEAN DEFAULT 0",
+            "plan_status": "TEXT DEFAULT 'pending'",
+            "planned_questions": "TEXT DEFAULT '[]'",
+        }
+        for column, ddl in session_additions.items():
+            if column not in session_names:
+                conn.exec_driver_sql(f"ALTER TABLE coach_sessions ADD COLUMN {column} {ddl}")
 
 
 def open_session() -> Session:
