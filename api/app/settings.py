@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     mosaiva_mosaic_fixture: bool = False
     mosaiva_seed_hypotheses: bool = True
     mosaiva_seed_interventions: bool = True
+    mosaiva_seed_research: bool = True
     mosaiva_coach_plan_fixture: bool = False
 
     @property

@@ -1,22 +1,25 @@
 import { FormEvent, useEffect, useState } from "react";
 import { api } from "../api";
-import { Hypothesis, ResearchItem } from "../types";
+import { Hypothesis, Intervention, ResearchItem } from "../types";
 
 export function Research() {
   const [query, setQuery] = useState("");
   const [items, setItems] = useState<ResearchItem[]>([]);
   const [hypotheses, setHypotheses] = useState<Hypothesis[]>([]);
+  const [interventions, setInterventions] = useState<Intervention[]>([]);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
   async function load() {
-    const [papers, ideas] = await Promise.all([
+    const [papers, ideas, actions] = await Promise.all([
       api<ResearchItem[]>("/api/research"),
       api<Hypothesis[]>("/api/hypotheses"),
+      api<Intervention[]>("/api/interventions"),
     ]);
     setItems(papers);
     setHypotheses(ideas);
+    setInterventions(actions);
   }
 
   useEffect(() => {
@@ -57,7 +60,11 @@ export function Research() {
     <section>
       <header className="section-head">
         <h2>Research</h2>
-        <p>Web search keeps only freely downloadable PDFs from a list of reputable journals.</p>
+        <p>
+          Web search keeps only freely downloadable PDFs from a list of reputable journals. A starter set of
+          open-access papers is saved here when those titles are missing. The notes are background, not a dose
+          and not an instruction to start a medicine.
+        </p>
       </header>
       {error && <p className="alert">{error}</p>}
       <form className="card form inline" onSubmit={onSearch}>
@@ -80,6 +87,15 @@ export function Research() {
               {item.year ? ` · ${item.year}` : ""}
             </p>
             <p>{item.relevance_note}</p>
+            {interventions.some((row) => item.intervention_ids.includes(row.id)) && (
+              <p className="meta">
+                Filed with:{" "}
+                {interventions
+                  .filter((row) => item.intervention_ids.includes(row.id))
+                  .map((row) => row.name)
+                  .join(" · ")}
+              </p>
+            )}
             <p>
               <a href={item.pdf_url} target="_blank" rel="noreferrer">
                 Free PDF

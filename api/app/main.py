@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.db import init_db, open_session
 from app.routers import coach, hypotheses, interventions, mosaic, research, settings
-from app.services.seed import seed_hypotheses, seed_interventions
+from app.services.seed import seed_hypotheses, seed_interventions, seed_research
 from app.settings import DATA_DIR, PAPERS_DIR
 
 
@@ -18,6 +18,7 @@ async def lifespan(_app: FastAPI):
     try:
         seed_hypotheses(db)
         seed_interventions(db)
+        seed_research(db)
     finally:
         db.close()
     yield

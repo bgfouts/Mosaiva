@@ -49,6 +49,7 @@ def test_seed_inserts_each_spreadsheet_theory_once(tmp_path, monkeypatch):
     monkeypatch.setenv("MOSAIVA_RESEARCH_FIXTURE", "")
     monkeypatch.setenv("MOSAIVA_DISABLE_LIVE_SEARCH", "1")
     monkeypatch.setenv("MOSAIVA_SEED_HYPOTHESES", "1")
+    monkeypatch.setenv("MOSAIVA_SEED_RESEARCH", "0")
     from app.db import reset_engine
     from app.settings import get_settings
 
