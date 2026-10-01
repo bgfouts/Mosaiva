@@ -1,0 +1,191 @@
+[
+  {
+    "title": "Migraine-spectrum disorder / silent migraine",
+    "description": "Migraine can produce profound fatigue, sleepiness, brain fog, nausea, photophobia/phonophobia, autonomic symptoms, and visual symptoms even with little or no headache.",
+    "why_it_fits": "Stereotyped facial/head pain, light/sound sensitivity, behind-the-eyes sensations, nausea, neck involvement, fluctuating episodes, and improvement after sleep all fit a migraine-spectrum pattern.",
+    "confidence": "High",
+    "likely_role": "Primary explanation"
+  },
+  {
+    "title": "Migraine with prominent hypothalamic/autonomic involvement",
+    "description": "A migraine phenotype in which sleep/wake, temperature, autonomic, and arousal symptoms are more prominent than head pain.",
+    "why_it_fits": "Could unify irresistible sleep, brain fog, hot/cold sensations, nausea, sensory sensitivity, and occasional mild headache.",
+    "confidence": "High",
+    "likely_role": "Primary explanation"
+  },
+  {
+    "title": "POTS / dysautonomia / orthostatic intolerance",
+    "description": "Abnormal regulation of heart rate, vascular tone, and blood distribution when upright; often worsened by heat, meals, or exertion.",
+    "why_it_fits": "A prior home orthostatic test showed heart rate rising from 89 supine to 120 after 10 minutes standing. Heat intolerance, sweating, air hunger, heavy limbs, and improvement with rest also fit.",
+    "confidence": "Moderate–High",
+    "likely_role": "Possible coexisting condition"
+  },
+  {
+    "title": "Primary sleep disorder — especially OSA/UARS",
+    "description": "Repeated sleep disruption from airway obstruction or increased respiratory effort can cause severe daytime sleepiness despite apparently adequate sleep.",
+    "why_it_fits": "Irresistible naps despite stimulant medication and caffeine are significant. Typical sleep duration is often 6.5–7 hours, and consumer watch data cannot reliably exclude apnea.",
+    "confidence": "Moderate–High",
+    "likely_role": "Unresolved primary contributor"
+  },
+  {
+    "title": "Idiopathic hypersomnia (IH)",
+    "description": "A neurologic hypersomnolence disorder characterized by excessive sleep need, long naps, and marked sleep inertia.",
+    "why_it_fits": "Long 90–120+ minute involuntary naps, severe grogginess if awakened early, and sleepiness that can overpower stimulants resemble IH.",
+    "confidence": "Moderate",
+    "likely_role": "Possible coexisting condition"
+  },
+  {
+    "title": "Perimenopause / hormonal instability",
+    "description": "Hormonal fluctuations can worsen migraine, sleep quality, autonomic symptoms, temperature regulation, cognition, and mood symptoms.",
+    "why_it_fits": "Age and symptom pattern make hormonal instability plausible, and it could amplify migraine and sleep problems without explaining everything by itself.",
+    "confidence": "Moderate",
+    "likely_role": "Contributor / amplifier"
+  },
+  {
+    "title": "Histamine as a migraine/autonomic trigger",
+    "description": "Histamine exposure or mast-cell signaling may lower migraine threshold or worsen autonomic symptoms without requiring mast-cell activation syndrome.",
+    "why_it_fits": "A period of severe sleepiness overlapped with daily yogurt intake and improved after stopping it; food-related flares have also been considered.",
+    "confidence": "Moderate, provisional",
+    "likely_role": "Possible trigger / amplifier"
+  },
+  {
+    "title": "Systemic nickel allergy syndrome (SNAS)",
+    "description": "Systemic exposure to nickel can provoke dermatitis and sometimes gastrointestinal or systemic symptoms in sensitized people.",
+    "why_it_fits": "Positive nickel/cobalt patch testing and recurrent characteristic rash support genuine nickel sensitivity. The connection to profound sleepiness is less certain.",
+    "confidence": "High for rash; Low–Moderate for sleepiness",
+    "likely_role": "Established issue; uncertain systemic contributor"
+  },
+  {
+    "title": "Medication / drug-interaction effects",
+    "description": "Medications can alter sleep architecture, arousal, blood pressure, autonomic function, and caffeine metabolism.",
+    "why_it_fits": "Fluvoxamine affects caffeine metabolism; verapamil may affect blood pressure/autonomic responses; stimulants and other psychiatric medications complicate the arousal picture.",
+    "confidence": "Moderate",
+    "likely_role": "Contributor / amplifier"
+  },
+  {
+    "title": "Binocular vision dysfunction / ocular motor problem",
+    "description": "Eye alignment or convergence problems can provoke visual strain, headache, dizziness, and migraine.",
+    "why_it_fits": "An eye has been observed drifting while reading, alongside behind-the-eye discomfort and sensory symptoms.",
+    "confidence": "Moderate",
+    "likely_role": "Possible trigger or separate condition"
+  },
+  {
+    "title": "Cervicogenic migraine / cervical input",
+    "description": "Neck pathology can activate trigeminal and migraine pathways and contribute to head or facial pain.",
+    "why_it_fits": "MRI shows C5–6 disease with severe right foraminal stenosis, while neck, jaw, and facial symptoms have often occurred together.",
+    "confidence": "Moderate–High",
+    "likely_role": "Contributor / trigger"
+  },
+  {
+    "title": "Recurrent/occult UTI or other infection",
+    "description": "Infection can cause fatigue, sleepiness, and cognitive symptoms even when urinary symptoms are subtle.",
+    "why_it_fits": "Long history of recurrent, difficult-to-culture UTIs and resistant organisms means infection could explain individual crashes, including current episodes.",
+    "confidence": "Moderate for individual episodes; Low as unifying diagnosis",
+    "likely_role": "Intermittent trigger / episode-specific cause"
+  },
+  {
+    "title": "Mast cell activation syndrome (MCAS)",
+    "description": "Inappropriate mast-cell mediator release causing episodic symptoms across multiple organ systems.",
+    "why_it_fits": "Rashes, itching, gastrointestinal symptoms, heat intolerance, and some food associations can fit. Against it: inconsistent response to low-histamine approaches and lack of a strong recurrent multisystem allergic pattern.",
+    "confidence": "Low–Moderate",
+    "likely_role": "Possible but less favored"
+  },
+  {
+    "title": "ME/CFS",
+    "description": "A disorder characterized especially by post-exertional malaise, impaired recovery, cognitive dysfunction, and unrefreshing sleep.",
+    "why_it_fits": "Fatigue, brain fog, and orthostatic symptoms fit superficially, but clear delayed post-exertional malaise has not been a dominant feature.",
+    "confidence": "Low–Moderate",
+    "likely_role": "Less favored primary explanation"
+  },
+  {
+    "title": "Fibromyalgia / central sensitization",
+    "description": "Altered pain processing associated with widespread pain, fatigue, sleep disturbance, headaches, and cognitive symptoms.",
+    "why_it_fits": "Earlier combinations of aches, fatigue, sleep issues, GI symptoms, and headaches fit, but newer migraine/autonomic clues are more specific.",
+    "confidence": "Low–Moderate",
+    "likely_role": "Possible contributor"
+  },
+  {
+    "title": "Small-fiber neuropathy",
+    "description": "Dysfunction or damage of small sensory and autonomic nerve fibers, sometimes associated with POTS.",
+    "why_it_fits": "Could connect autonomic symptoms with sensory and temperature-regulation complaints, but classic persistent burning neuropathic symptoms have not been prominent.",
+    "confidence": "Low",
+    "likely_role": "Possible underlying contributor"
+  },
+  {
+    "title": "Systemic autoimmune disease — lupus/Sjögren's/etc.",
+    "description": "Systemic inflammatory disease can cause fatigue, neurologic symptoms, Raynaud-type symptoms, and rashes.",
+    "why_it_fits": "Raynaud/chilblain-like symptoms and rashes made this reasonable to investigate, but negative ANA testing and rash biopsies not showing lupus reduce the fit.",
+    "confidence": "Low",
+    "likely_role": "Less favored"
+  },
+  {
+    "title": "Intracranial hypertension (IIH)",
+    "description": "Elevated intracranial pressure can cause headache, pressure behind the eyes, visual symptoms, pulsatile tinnitus, and sometimes sixth-nerve palsy.",
+    "why_it_fits": "Eye-pressure sensations, headache, and eye drift make it worth considering, but papilledema, typical transient visual obscurations, pulsatile tinnitus, or elevated opening pressure have not been established.",
+    "confidence": "Low–Moderate / insufficient evidence",
+    "likely_role": "Unresolved but not leading"
+  },
+  {
+    "title": "Hypothyroidism",
+    "description": "Low thyroid hormone can cause fatigue, sleepiness, cold intolerance, cognitive slowing, and weight changes.",
+    "why_it_fits": "It belongs in the differential for profound fatigue and is easy to screen for, although the episodic migraine/autonomic pattern is not especially characteristic.",
+    "confidence": "Low if prior thyroid testing normal; otherwise unresolved",
+    "likely_role": "Rule-out condition"
+  },
+  {
+    "title": "Iron/B12/vitamin-D deficiency or anemia",
+    "description": "Nutritional deficiencies or anemia can cause fatigue, cognitive problems, exercise intolerance, and sometimes neurologic symptoms.",
+    "why_it_fits": "Common and treatable causes of fatigue that should not be overlooked, though they do not explain the distinctive episodic migraine/sleep-attack pattern well.",
+    "confidence": "Low as unifying explanation",
+    "likely_role": "Rule-out / contributor"
+  },
+  {
+    "title": "Adrenal insufficiency",
+    "description": "Inadequate cortisol production can cause severe fatigue, GI symptoms, orthostatic hypotension, and poor stress tolerance.",
+    "why_it_fits": "Fatigue, nausea, and orthostatic-type symptoms overlap, but several stronger classic clues have not been prominent.",
+    "confidence": "Low",
+    "likely_role": "Rule-out condition"
+  },
+  {
+    "title": "Post-viral syndrome / Long COVID",
+    "description": "Persistent autonomic, neuroimmune, and cognitive dysfunction after infection.",
+    "why_it_fits": "Could theoretically cause dysautonomia and fatigue, but no compelling infection-to-onset relationship has emerged.",
+    "confidence": "Low",
+    "likely_role": "Less favored"
+  },
+  {
+    "title": "Psychiatric stress / autistic-ADHD burnout",
+    "description": "Chronic sensory, cognitive, and emotional load can markedly increase exhaustion and reduce resilience.",
+    "why_it_fits": "Stress and sensory load may worsen symptoms, but involuntary naps, autonomic findings, photophobia, and stereotyped physical episodes make this inadequate as a sole explanation.",
+    "confidence": "Moderate as amplifier; Low as primary cause",
+    "likely_role": "Amplifier"
+  },
+  {
+    "title": "Narcolepsy type 2",
+    "description": "A neurologic hypersomnolence disorder involving abnormal REM regulation, without cataplexy.",
+    "why_it_fits": "Sleep attacks despite stimulant medication keep it in the sleep-medicine differential, but classic REM-related features have not been prominent.",
+    "confidence": "Low–Moderate",
+    "likely_role": "Possible sleep diagnosis"
+  },
+  {
+    "title": "Seizure disorder",
+    "description": "Focal neurologic episodes can sometimes cause altered awareness followed by pronounced fatigue.",
+    "why_it_fits": "Considered because some attacks are neurologically unusual, but the long, fluctuating, trigger-responsive, migraine-like episodes are less typical of seizures.",
+    "confidence": "Low",
+    "likely_role": "Less favored"
+  },
+  {
+    "title": "TIA / cerebrovascular episodes",
+    "description": "Temporary focal cerebral ischemia causing transient neurologic deficits.",
+    "why_it_fits": "Initially worth considering for unusual neurologic symptoms, but the recurrent stereotyped course and migraine features make this a poor global explanation.",
+    "confidence": "Very Low",
+    "likely_role": "Very unlikely unifying explanation"
+  },
+  {
+    "title": "Primary CNS autoimmune/inflammatory disease",
+    "description": "Inflammation involving the brain or central nervous system can cause cognitive, autonomic, or sleep/wake abnormalities.",
+    "why_it_fits": "Broad neurologic symptoms once made this part of a wide differential, but the long fluctuating history without progressive objective neurologic decline makes it less persuasive.",
+    "confidence": "Very Low",
+    "likely_role": "Very unlikely"
+  }
+]

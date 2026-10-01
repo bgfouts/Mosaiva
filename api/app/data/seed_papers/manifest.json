@@ -1,0 +1,270 @@
+[
+  {
+    "pmcid": "PMC11858643",
+    "title": "Magnesium and Migraine.",
+    "journal": "Nutrients",
+    "year": 2025,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11858643/pdf/",
+    "file": "pdfs/PMC11858643.pdf",
+    "relevance_note": "A 2025 review of magnesium in migraine. It is background for the working idea of a migraine-spectrum problem and for the question of morning magnesium threonate. It is not an instruction to start or stop a supplement.",
+    "hypothesis_titles": [
+      "Migraine-spectrum disorder / silent migraine"
+    ],
+    "intervention_names": [
+      "Stop morning magnesium threonate"
+    ]
+  },
+  {
+    "pmcid": "PMC9951598",
+    "title": "Review of Tolerability of Fremanezumab for Episodic and Chronic Migraine.",
+    "journal": "Neuropsychiatric Disease and Treatment",
+    "year": 2023,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9951598/pdf/",
+    "file": "pdfs/PMC9951598.pdf",
+    "relevance_note": "A review of fremanezumab, the medicine in Ajovy, for prevention of episodic and chronic migraine. Whether to start it is a question for a clinician. This note does not include a dose.",
+    "hypothesis_titles": [
+      "Migraine-spectrum disorder / silent migraine"
+    ],
+    "intervention_names": [
+      "Start Ajovy (30-day injectable)"
+    ]
+  },
+  {
+    "pmcid": "PMC12616900",
+    "title": "Histamine plasma levels from dietary histidine/histamine intake correlate with CGRP in trigeminal tissues.",
+    "journal": "The Journal of Headache and Pain",
+    "year": 2025,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12616900/pdf/",
+    "file": "pdfs/PMC12616900.pdf",
+    "relevance_note": "A laboratory study in mice, not a human trial. It reports that dietary histidine and histamine were associated with CGRP in trigeminal tissue. That is background for the histamine trigger idea and for trying a low-histamine pattern again. It is not a meal plan.",
+    "hypothesis_titles": [
+      "Histamine as a migraine/autonomic trigger"
+    ],
+    "intervention_names": [
+      "No yogurt — low-histamine diet again"
+    ]
+  },
+  {
+    "pmcid": "PMC12470264",
+    "title": "Evidence for Dietary Management of Histamine Intolerance.",
+    "journal": "International Journal of Molecular Sciences",
+    "year": 2025,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12470264/pdf/",
+    "file": "pdfs/PMC12470264.pdf",
+    "relevance_note": "A review of histamine intolerance and the low-histamine diet used to assess it. It is background for the histamine trigger idea and for the yogurt and low-histamine question. It is not a personalized diet.",
+    "hypothesis_titles": [
+      "Histamine as a migraine/autonomic trigger"
+    ],
+    "intervention_names": [
+      "No yogurt — low-histamine diet again"
+    ]
+  },
+  {
+    "pmcid": "PMC11352109",
+    "title": "Navigating Complexity in Postural Orthostatic Tachycardia Syndrome.",
+    "journal": "Biomedicines",
+    "year": 2024,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11352109/pdf/",
+    "file": "pdfs/PMC11352109.pdf",
+    "relevance_note": "A review of POTS physiology, including fluid intake, dehydration, small-fiber neuropathy, and mast cell activation. It is background for those working ideas and for steadier hydration. It is not a fluid target.",
+    "hypothesis_titles": [
+      "POTS / dysautonomia / orthostatic intolerance",
+      "Small-fiber neuropathy",
+      "Mast cell activation syndrome (MCAS)"
+    ],
+    "intervention_names": [
+      "Consistent hydration and electrolytes"
+    ]
+  },
+  {
+    "pmcid": "PMC11646465",
+    "title": "Exercise Interventions in the Management of Postural Orthostatic Tachycardia Syndrome: A Scoping Review.",
+    "journal": "Journal of Multidisciplinary Healthcare",
+    "year": 2024,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11646465/pdf/",
+    "file": "pdfs/PMC11646465.pdf",
+    "relevance_note": "A scoping review of exercise programs studied in POTS, including aerobic work and later walking. It is background for more outdoor time and gentle movement. It is not a training plan.",
+    "hypothesis_titles": [
+      "POTS / dysautonomia / orthostatic intolerance"
+    ],
+    "intervention_names": [
+      "More outdoor time, walking, and gentle movement"
+    ]
+  },
+  {
+    "pmcid": "PMC12977306",
+    "title": "Idiopathic hypersomnia is a 24-hour disorder.",
+    "journal": "Journal of Clinical Sleep Medicine",
+    "year": 2025,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12977306/pdf/",
+    "file": "pdfs/PMC12977306.pdf",
+    "relevance_note": "A review of idiopathic hypersomnia across the day and night, including overlap with narcolepsy type 2 and the limits of current testing. Stimulant and other wake-promoting medicines in the paper are described as clinician-managed. This is not a reason to increase one, and this note does not include a dose.",
+    "hypothesis_titles": [
+      "Idiopathic hypersomnia (IH)",
+      "Narcolepsy type 2"
+    ],
+    "intervention_names": [
+      "Sleep study",
+      "Increase Vyvanse"
+    ]
+  },
+  {
+    "pmcid": "PMC13348430",
+    "title": "Performance evaluation of finger-worn devices for sleep stage classification and sleep apnea detection: a systematic review and meta-analysis.",
+    "journal": "Journal of Translational Medicine",
+    "year": 2026,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13348430/pdf/",
+    "file": "pdfs/PMC13348430.pdf",
+    "relevance_note": "A review of finger-worn sleep devices, including smart rings, compared with polysomnography for sleep stages and sleep apnea detection. It is background for an OSA or UARS question, a sleep study, and a ring-style tracker. It is not a product recommendation.",
+    "hypothesis_titles": [
+      "Primary sleep disorder — especially OSA/UARS"
+    ],
+    "intervention_names": [
+      "Sleep study",
+      "Upgrade Apple Watch and/or Oura Ring"
+    ]
+  },
+  {
+    "pmcid": "PMC12833160",
+    "title": "Blue-light-filtering spectacle lenses in managing vision-related symptoms: an updated review.",
+    "journal": "Therapeutic Advances in Ophthalmology",
+    "year": 2026,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12833160/pdf/",
+    "file": "pdfs/PMC12833160.pdf",
+    "relevance_note": "A review of blue-light-filtering lenses for visual comfort and sleep, including reports about migraine frequency. The same review describes limited or uncertain benefit. It is background for amber blue-blocker glasses, not a reason to buy a specific pair.",
+    "hypothesis_titles": [
+      "Migraine-spectrum disorder / silent migraine"
+    ],
+    "intervention_names": [
+      "Blue-blocker amber glasses"
+    ]
+  },
+  {
+    "pmcid": "PMC13292324",
+    "title": "Clinical, demographic, and lifestyle characteristics of patients with cervicogenic headache: comparison with an age- and sex-matched group of individuals with migraine.",
+    "journal": "The Journal of Headache and Pain",
+    "year": 2026,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13292324/pdf/",
+    "file": "pdfs/PMC13292324.pdf",
+    "relevance_note": "A clinic comparison of cervicogenic headache and migraine, including neck pain and sleep posture. It is background for separating a cervical contribution from a migraine-spectrum pattern. It is not a diagnosis.",
+    "hypothesis_titles": [
+      "Cervicogenic migraine / cervical input",
+      "Migraine-spectrum disorder / silent migraine"
+    ],
+    "intervention_names": []
+  },
+  {
+    "pmcid": "PMC13400467",
+    "title": "The Neurology of Menopause.",
+    "journal": "Current Neurology and Neuroscience Reports",
+    "year": 2026,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13400467/pdf/",
+    "file": "pdfs/PMC13400467.pdf",
+    "relevance_note": "A review of menopause and several neurological conditions. It describes perimenopausal hormonal fluctuation as a time when migraine can worsen in susceptible people. It is background for that working idea, not a hormone plan.",
+    "hypothesis_titles": [
+      "Perimenopause / hormonal instability",
+      "Migraine-spectrum disorder / silent migraine"
+    ],
+    "intervention_names": []
+  },
+  {
+    "pmcid": "PMC13479630",
+    "title": "Update to the management of recurrent urinary tract infections in women aged 16 years and older.",
+    "journal": "Drug and Therapeutics Bulletin",
+    "year": 2026,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13479630/pdf/",
+    "file": "pdfs/PMC13479630.pdf",
+    "relevance_note": "An overview of how recurrent urinary infections are assessed, including when a urine culture is used. It is background for that working idea. A culture is a question for a clinician. This note does not include an antibiotic plan.",
+    "hypothesis_titles": [
+      "Recurrent/occult UTI or other infection"
+    ],
+    "intervention_names": [
+      "Urine culture to rule out a cryptic UTI"
+    ]
+  },
+  {
+    "pmcid": "PMC13080504",
+    "title": "Systemic Nickel Allergy Syndrome.",
+    "journal": "American Journal of Medicine Open",
+    "year": 2026,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13080504/pdf/",
+    "file": "pdfs/PMC13080504.pdf",
+    "relevance_note": "A review of systemic nickel allergy syndrome, including skin and gut symptoms after nickel exposure and the low-nickel diet discussed in that literature. It is background for the SNAS working idea, not a diagnosis and not a diet to start from this note.",
+    "hypothesis_titles": [
+      "Systemic nickel allergy syndrome (SNAS)"
+    ],
+    "intervention_names": []
+  },
+  {
+    "pmcid": "PMC12698587",
+    "title": "Part II - imidazolines and rhinitis medicamentosa: how can we tackle the rebound dilemma?",
+    "journal": "Frontiers in Pharmacology",
+    "year": 2025,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12698587/pdf/",
+    "file": "pdfs/PMC12698587.pdf",
+    "relevance_note": "A review of rebound congestion after prolonged use of topical imidazoline decongestants, including oxymetazoline. It is background for the nasal irrigation and Afrin question. It is not an instruction to start a decongestant.",
+    "hypothesis_titles": [],
+    "intervention_names": [
+      "Nasal irrigation / Afrin"
+    ]
+  },
+  {
+    "pmcid": "PMC11802704",
+    "title": "An Exploration of the Interplay Between Caffeine and Antidepressants Through the Lens of Pharmacokinetics and Pharmacodynamics.",
+    "journal": "European Journal of Drug Metabolism and Pharmacokinetics",
+    "year": 2025,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11802704/pdf/",
+    "file": "pdfs/PMC11802704.pdf",
+    "relevance_note": "A review of how caffeine and antidepressants, including fluvoxamine, can affect each other. It is background for medication and drug-interaction questions, including any change to Luvox. Changing that medicine belongs with a clinician. This note does not include a dose.",
+    "hypothesis_titles": [
+      "Medication / drug-interaction effects"
+    ],
+    "intervention_names": [
+      "Reduce Luvox from 150 mg to 100 mg"
+    ]
+  },
+  {
+    "pmcid": "PMC13241146",
+    "title": "Melatonin and sleep: Exploring its role in regulating the circadian rhythm and sleep-wake cycle.",
+    "journal": "Journal of Family Medicine and Primary Care",
+    "year": 2026,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13241146/pdf/",
+    "file": "pdfs/PMC13241146.pdf",
+    "relevance_note": "A review of melatonin as a signal for circadian timing and sleep onset. It is background for a circadian reset and an earlier bedtime. It is not a dose and not an instruction to start melatonin.",
+    "hypothesis_titles": [],
+    "intervention_names": [
+      "Melatonin circadian reset for an earlier bedtime",
+      "Earlier bedtime"
+    ]
+  },
+  {
+    "pmcid": "PMC13485101",
+    "title": "The emerging role of glucagon-like peptide-1 receptor agonists in idiopathic intracranial hypertension: Therapeutic potential and challenges.",
+    "journal": "Indian Journal of Ophthalmology",
+    "year": 2026,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13485101/pdf/",
+    "file": "pdfs/PMC13485101.pdf",
+    "relevance_note": "An emerging review of GLP-1 receptor agonists in idiopathic intracranial hypertension. The evidence is early and uncertain. It is not a reason to start a GLP-1 medicine. Whether it is relevant is a question for a clinician.",
+    "hypothesis_titles": [
+      "Intracranial hypertension (IIH)"
+    ],
+    "intervention_names": [
+      "GLP-1"
+    ]
+  },
+  {
+    "pmcid": "PMC13358750",
+    "title": "From Sjögren syndrome to Sjögren disease: rethinking classification and diagnostic complexity.",
+    "journal": "The Korean Journal of Internal Medicine",
+    "year": 2026,
+    "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13358750/pdf/",
+    "file": "pdfs/PMC13358750.pdf",
+    "relevance_note": "A review of how Sjögren disease is classified and why that label is easy to miss or over-call in routine care. It is background for the autoimmune working idea and for asking a clinician about repeat labs. It is not a diagnosis.",
+    "hypothesis_titles": [
+      "Systemic autoimmune disease — lupus/Sjögren's/etc."
+    ],
+    "intervention_names": [
+      "Retest vitamins, thyroid, and autoimmune panels, especially Sjögren's"
+    ]
+  }
+]
