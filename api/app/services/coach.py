@@ -1,5 +1,4 @@
 import json
-import threading
 from datetime import datetime, timedelta, timezone
 
 import httpx
@@ -350,13 +349,14 @@ def build_question_plan(db: Session) -> list[str]:
     return planned or fixture_questions(db)
 
 
-def plan_session_questions(session_id: int) -> None:
+def plan_session_questions(session_id: int, db: Session | None = None) -> None:
     from app.db import open_session
 
-    db = open_session()
+    owned = db is None
+    db = db or open_session()
     try:
         session = db.get(CoachSession, session_id)
-        if session is None:
+        if session is None or session.plan_status == "ready":
             return
         session.planned_questions = build_question_plan(db)
         session.plan_status = "ready"
@@ -369,16 +369,8 @@ def plan_session_questions(session_id: int) -> None:
             session.plan_status = "ready"
             db.commit()
     finally:
-        db.close()
-
-
-def start_question_plan(session_id: int) -> None:
-    threading.Thread(
-        target=plan_session_questions,
-        args=(session_id,),
-        name=f"coach-plan-{session_id}",
-        daemon=True,
-    ).start()
+        if owned:
+            db.close()
 
 
 def coach_instructions(db: Session) -> str:
@@ -464,7 +456,6 @@ def create_live_session(db: Session, sdp: str) -> dict:
     db.add(session)
     db.commit()
     db.refresh(session)
-    start_question_plan(session.id)
     return {
         "session_id": session.id,
         "live_session_id": live_id,

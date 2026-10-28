@@ -115,8 +115,12 @@ def test_background_plan_uses_fixture_questions_without_a_dose(client):
     assert all("dose" not in question.lower() and "mg" not in question.lower() for question in questions)
     assert any("Fragmented sleep" in question for question in questions)
 
+    planned = client.post(f"/api/coach/sessions/{session_id}/plan")
+    assert planned.status_code == 200
+    assert planned.json()["visit"]["plan_status"] == "ready"
     plan_session_questions(session_id)
     saved = client.get(f"/api/coach/sessions/{session_id}").json()
+    assert saved["visit"]["questions"] == planned.json()["visit"]["questions"]
     assert saved["visit"]["plan_status"] == "ready"
     assert saved["visit"]["questions"]
     assert saved["visit"]["questions_context"]
