@@ -1,4 +1,4 @@
-import { FormEvent, Fragment, useEffect, useState } from "react";
+import { FormEvent, Fragment, useEffect, useRef, useState } from "react";
 import { api } from "../api";
 import { Hypothesis } from "../types";
 
@@ -38,6 +38,8 @@ export function Hypotheses() {
   const [form, setForm] = useState(empty);
   const [editing, setEditing] = useState<number | null>(null);
   const [error, setError] = useState("");
+  const [formOpen, setFormOpen] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   async function load() {
     setRows(await api<Hypothesis[]>("/api/hypotheses"));
@@ -66,6 +68,7 @@ export function Hypotheses() {
       }
       setForm(empty);
       setEditing(null);
+      setFormOpen(false);
       await load();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not save the hypothesis.");
@@ -92,6 +95,8 @@ export function Hypotheses() {
       likely_role: row.likely_role,
       status: row.status,
     });
+    setFormOpen(true);
+    window.requestAnimationFrame(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
   }
 
   return (
@@ -101,7 +106,13 @@ export function Hypotheses() {
         <p>{CONFIDENCE_NOTE}</p>
       </header>
       {error && <p className="alert">{error}</p>}
-      <form className="card form" onSubmit={onSubmit}>
+      {!formOpen && (
+        <button type="button" className="ghost add-toggle" onClick={() => setFormOpen(true)}>
+          Add a theory
+        </button>
+      )}
+      {formOpen && (
+      <form ref={formRef} className="card form" onSubmit={onSubmit}>
         <label>
           Theory
           <input value={form.title} onChange={(event) => setForm({ ...form, title: event.target.value })} required />
@@ -156,20 +167,20 @@ export function Hypotheses() {
         </label>
         <div className="row-actions">
           <button type="submit">{editing ? "Save theory" : "Add theory"}</button>
-          {editing && (
-            <button
-              type="button"
-              className="ghost"
-              onClick={() => {
-                setEditing(null);
-                setForm(empty);
-              }}
-            >
-              Cancel edit
-            </button>
-          )}
+          <button
+            type="button"
+            className="ghost"
+            onClick={() => {
+              setEditing(null);
+              setForm(empty);
+              setFormOpen(false);
+            }}
+          >
+            {editing ? "Cancel edit" : "Close"}
+          </button>
         </div>
       </form>
+      )}
       {rows.length === 0 && <p className="empty">No theories yet.</p>}
       {rows.length > 0 && (
         <div className="table-scroll">
@@ -194,10 +205,10 @@ export function Hypotheses() {
                       {row.title}
                       {row.status !== "active" && <span className="pill">{row.status}</span>}
                     </td>
-                    <td>{row.statement}</td>
-                    <td>{row.why_it_fits}</td>
-                    <td>{row.confidence}</td>
-                    <td>{row.likely_role}</td>
+                    <td data-label="Description">{row.statement}</td>
+                    <td data-label="Why it might fit your history">{row.why_it_fits}</td>
+                    <td data-label="Current confidence / fit">{row.confidence}</td>
+                    <td data-label="Likely role">{row.likely_role}</td>
                     <td className="actions">
                       <button type="button" className="ghost" onClick={() => beginEdit(row)}>
                         Edit
