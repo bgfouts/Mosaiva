@@ -1,0 +1,10 @@
+.venv
+.env
+web/node_modules
+web/dist
+public
+data/*.db
+data/papers
+api/tests
+**/__pycache__
+.pytest_cache
