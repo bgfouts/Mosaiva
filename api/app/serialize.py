@@ -70,6 +70,7 @@ def research_dict(item: ResearchItem) -> dict:
         "excerpt": item.excerpt,
         "query": item.query,
         "relevance_note": item.relevance_note,
+        "has_saved_copy": bool(item.local_path),
         "hypothesis_ids": [h.id for h in item.hypotheses],
         "intervention_ids": [i.id for i in item.interventions],
         "created_at": item.created_at.isoformat() if item.created_at else None,

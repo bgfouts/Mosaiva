@@ -51,6 +51,7 @@ export type ResearchItem = {
   excerpt: string;
   query: string;
   relevance_note: string;
+  has_saved_copy: boolean;
   hypothesis_ids: number[];
   intervention_ids: number[];
 };

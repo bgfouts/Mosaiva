@@ -61,7 +61,12 @@ def test_seed_inserts_each_open_access_paper_once(tmp_path, monkeypatch):
 
     with TestClient(app) as client:
         again = client.get("/api/research").json()
+        saved = client.get(f"/api/research/{ajovy['id']}/pdf")
     assert [row["id"] for row in again] == [row["id"] for row in papers]
+    assert all(row["has_saved_copy"] for row in papers)
+    assert saved.status_code == 200
+    assert saved.headers["content-type"] == "application/pdf"
+    assert saved.content.startswith(b"%PDF")
 
     from app.db import reset_engine
     from app.settings import get_settings
