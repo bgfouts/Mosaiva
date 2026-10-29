@@ -4,7 +4,7 @@
   "functions": {
     "index.py": {
       "maxDuration": 300,
-      "excludeFiles": "{web/**,public/**,api/tests/**,data/**,.venv/**,**/__pycache__/**}"
+      "excludeFiles": "{web/**,public/**,api/tests/**,data/**,.venv/**,**/__pycache__/**,**/.pytest_cache/**,.env*}"
     }
   },
   "rewrites": [{ "source": "/", "destination": "/index.html" }],

@@ -13,6 +13,8 @@ from app.settings import DATA_DIR, ON_VERCEL, get_settings
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     if get_settings().database_url.startswith("sqlite"):
+        if ON_VERCEL:
+            raise RuntimeError("DATABASE_URL is not set. Connect a Neon database to this Vercel project.")
         DATA_DIR.mkdir(parents=True, exist_ok=True)
     with startup_lock():
         init_db()
