@@ -7,6 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "data"
+WEB_BUILD_DIR = ROOT / "api" / "web_build"
 ON_VERCEL = bool(os.environ.get("VERCEL"))
 # Vercel's deployment bundle is read-only; only /tmp can be written at runtime.
 PAPERS_DIR = Path("/tmp/mosaiva/papers") if ON_VERCEL else DATA_DIR / "papers"

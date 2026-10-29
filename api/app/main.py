@@ -2,12 +2,13 @@ from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.auth import require_user
 from app.db import init_db, open_session, startup_lock
 from app.routers import auth, coach, hypotheses, interventions, mosaic, research, settings
 from app.services.seed import seed_hypotheses, seed_interventions, seed_research
-from app.settings import DATA_DIR, ON_VERCEL, get_settings
+from app.settings import DATA_DIR, ON_VERCEL, WEB_BUILD_DIR, get_settings
 
 
 @asynccontextmanager
@@ -50,6 +51,11 @@ def create_app() -> FastAPI:
     @app.get("/api/health")
     def health() -> dict:
         return {"status": "ok"}
+
+    # Vercel's FastAPI preset does not publish static files created by the build command, so the
+    # function serves the built web app itself.
+    if ON_VERCEL and WEB_BUILD_DIR.is_dir():
+        app.mount("/", StaticFiles(directory=WEB_BUILD_DIR, html=True), name="web")
 
     return app
 

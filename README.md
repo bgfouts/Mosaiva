@@ -29,7 +29,7 @@ Open http://127.0.0.1:5173. The web app proxies `/api` to the local API. Locally
 
 ## Deploy to Vercel
 
-The deployment runs the FastAPI app as one Python function (`index.py`) and serves the built web app from Vercel's CDN. Data lives in Neon Postgres; saved PDFs live in a private Vercel Blob store. Every `/api` route except sign-in and `/api/health` requires a Google account on the allowlist.
+The deployment runs the FastAPI app as one Python function (`index.py`), which also serves the built web app from `api/web_build/`. Data lives in Neon Postgres; saved PDFs live in a private Vercel Blob store. Every `/api` route except sign-in and `/api/health` requires a Google account on the allowlist.
 
 1. **Import the repo** in Vercel (Add New → Project). Leave the framework preset on FastAPI; `vercel.json` already sets the build command.
 2. **Database.** In the project, open Storage → Create → Neon (Postgres) and connect it to the project. That sets `DATABASE_URL`. Tables and the starter hypotheses, interventions, and papers are created on the first request.

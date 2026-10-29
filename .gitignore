@@ -5,7 +5,7 @@ __pycache__/
 .env
 node_modules/
 web/dist/
-public/
+api/web_build/
 .vercel/
 .env*.local
 data/*.db
