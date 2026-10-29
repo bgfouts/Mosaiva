@@ -15,16 +15,19 @@ from app.services.coach import (
     create_live_session,
     discard_capture,
     missing_key_error,
+    plan_session_questions,
 )
 from app.settings import get_settings
 
 router = APIRouter(prefix="/coach", tags=["coach"])
 
 
-def _session(db: Session, session_id: int) -> CoachSession:
-    item = db.scalar(
-        select(CoachSession).options(selectinload(CoachSession.captures)).where(CoachSession.id == session_id)
-    )
+def _session(db: Session, session_id: int, *, lock: bool = False) -> CoachSession:
+    query = select(CoachSession).options(selectinload(CoachSession.captures)).where(CoachSession.id == session_id)
+    if lock:
+        # Transcript deltas arrive in parallel; the row lock keeps appends from overwriting each other.
+        query = query.with_for_update(of=CoachSession)
+    item = db.scalar(query)
     if item is None:
         raise HTTPException(status_code=404, detail="Coach session not found.")
     return item
@@ -58,9 +61,17 @@ def read_session(session_id: int, db: Session = Depends(get_db)):
     return session_dict(_session(db, session_id))
 
 
+@router.post("/sessions/{session_id}/plan")
+def plan_session(session_id: int, db: Session = Depends(get_db)):
+    _session(db, session_id)
+    plan_session_questions(session_id, db)
+    db.expire_all()
+    return session_dict(_session(db, session_id))
+
+
 @router.post("/sessions/{session_id}/events")
 def post_event(session_id: int, body: CoachEventIn, db: Session = Depends(get_db)):
-    session = _session(db, session_id)
+    session = _session(db, session_id, lock=True)
     result = append_event(db, session, body)
     capture = result["capture"]
     return {

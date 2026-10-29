@@ -64,17 +64,16 @@ export function Coach() {
   }
 
   async function watchQuestionPlan(sessionId: number, send: (payload: unknown) => void) {
-    for (let attempt = 0; attempt < 15 && !planCancelled.current; attempt += 1) {
-      const current = await api<CoachSession>(`/api/coach/sessions/${sessionId}`);
+    try {
+      const current = await api<CoachSession>(`/api/coach/sessions/${sessionId}/plan`, { method: "POST" });
+      if (planCancelled.current) return;
       setSession(current);
-      if (current.visit?.plan_status === "ready") {
-        if (current.visit.questions_context && !questionsSent.current) {
-          questionsSent.current = true;
-          send(liveAppend("thinking", "questions", current.visit.questions_context));
-        }
-        return;
+      if (current.visit?.questions_context && !questionsSent.current) {
+        questionsSent.current = true;
+        send(liveAppend("thinking", "questions", current.visit.questions_context));
       }
-      await new Promise((resolve) => window.setTimeout(resolve, 800));
+    } catch {
+      // The visit still works without drafted questions.
     }
   }
 

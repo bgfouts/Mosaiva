@@ -5,6 +5,9 @@ __pycache__/
 .env
 node_modules/
 web/dist/
+api/web_build/
+.vercel/
+.env*.local
 data/*.db
 data/papers/*
 !data/papers/.gitkeep

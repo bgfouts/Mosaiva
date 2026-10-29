@@ -1,0 +1,11 @@
+.venv
+.env
+.env*.local
+web/node_modules
+web/dist
+api/web_build
+data/*.db
+data/papers
+api/tests
+**/__pycache__
+.pytest_cache

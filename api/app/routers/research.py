@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
@@ -8,6 +8,7 @@ from app.schemas import ResearchPatch, ResearchSearchIn
 from app.serialize import research_dict
 from app.services.records import load_hypotheses, load_interventions
 from app.services.research import search_and_store
+from app.services.storage import read_pdf
 
 router = APIRouter(prefix="/research", tags=["research"])
 
@@ -46,6 +47,22 @@ def search_research(body: ResearchSearchIn, db: Session = Depends(get_db)):
         "skipped": result["skipped"],
         "message": result["message"],
     }
+
+
+@router.get("/{research_id}/pdf")
+def saved_pdf(research_id: int, db: Session = Depends(get_db)):
+    item = _get(db, research_id)
+    try:
+        body = read_pdf(item.local_path)
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail="The saved copy could not be read.") from exc
+    if body is None:
+        raise HTTPException(status_code=404, detail="There is no saved copy of this paper.")
+    return Response(
+        content=body,
+        media_type="application/pdf",
+        headers={"Content-Disposition": "inline", "Cache-Control": "private, max-age=3600", "X-Content-Type-Options": "nosniff"},
+    )
 
 
 @router.patch("/{research_id}")

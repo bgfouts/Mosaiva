@@ -7,11 +7,11 @@ from sqlalchemy.orm import Session
 
 from app.models import Hypothesis, Intervention, ResearchItem, utcnow
 from app.services.records import assert_intervention_rules, confidence_to_probability
-from app.settings import PAPERS_DIR, get_settings
+from app.services.storage import SEED_PAPERS_DIR, seed_location
+from app.settings import get_settings
 
 THEORIES_PATH = Path(__file__).resolve().parent.parent / "data" / "health_theories.json"
 INTERVENTIONS_PATH = Path(__file__).resolve().parent.parent / "data" / "potential_interventions.json"
-SEED_PAPERS_DIR = Path(__file__).resolve().parent.parent / "data" / "seed_papers"
 SEED_PAPERS_MANIFEST = SEED_PAPERS_DIR / "manifest.json"
 
 SHEET_TITLE = "Health Differential / Theories Discussed"
@@ -126,11 +126,8 @@ def seed_research(db: Session) -> int:
         reason = assess_candidate(url, "application/pdf", body)
         if reason:
             raise RuntimeError(f"Seed paper {paper.get('pmcid')} was rejected: {reason}")
-        PAPERS_DIR.mkdir(parents=True, exist_ok=True)
-        path = PAPERS_DIR / f"seed-{paper['pmcid']}.pdf"
-        path.write_bytes(body)
         try:
-            excerpt = extract_pdf_text(path)
+            excerpt = extract_pdf_text(body)
         except Exception:
             excerpt = ""
         item = ResearchItem(
@@ -138,7 +135,7 @@ def seed_research(db: Session) -> int:
             journal=str(paper.get("journal") or "")[:200],
             year=int(paper["year"]) if paper.get("year") is not None else None,
             pdf_url=url,
-            local_path=str(path),
+            local_path=seed_location(str(paper["file"])),
             excerpt=excerpt,
             query=f"seed:{paper['pmcid']}",
             relevance_note=str(paper.get("relevance_note") or "").strip(),

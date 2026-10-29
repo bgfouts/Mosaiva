@@ -1,6 +1,7 @@
-from collections.abc import Generator
+from collections.abc import Generator, Iterator
+from contextlib import contextmanager
 
-from sqlalchemy import create_engine, event
+from sqlalchemy import create_engine, event, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
@@ -34,8 +35,19 @@ def get_engine() -> Engine:
     global _engine, SessionLocal
     if _engine is None:
         url = get_settings().database_url
-        connect_args = {"check_same_thread": False} if url.startswith("sqlite") else {}
-        _engine = create_engine(url, connect_args=connect_args)
+        if url.startswith("sqlite"):
+            _engine = create_engine(url, connect_args={"check_same_thread": False})
+        else:
+            # Neon's pooled endpoint runs PgBouncer in transaction mode, so server-side
+            # prepared statements must stay off. Serverless instances keep the pool small.
+            _engine = create_engine(
+                url,
+                connect_args={"prepare_threshold": None},
+                pool_pre_ping=True,
+                pool_size=2,
+                max_overflow=3,
+                pool_recycle=300,
+            )
         SessionLocal = sessionmaker(bind=_engine, autoflush=False, expire_on_commit=False)
     return _engine
 
@@ -77,6 +89,22 @@ def _ensure_hypothesis_columns(engine: Engine) -> None:
         for column, ddl in session_additions.items():
             if column not in session_names:
                 conn.exec_driver_sql(f"ALTER TABLE coach_sessions ADD COLUMN {column} {ddl}")
+
+
+@contextmanager
+def startup_lock() -> Iterator[None]:
+    """Serialize schema setup and seeding when several serverless instances start at once."""
+    engine = get_engine()
+    if engine.dialect.name != "postgresql":
+        yield
+        return
+    with engine.connect() as conn:
+        conn.execute(text("SELECT pg_advisory_lock(727134)"))
+        try:
+            yield
+        finally:
+            conn.execute(text("SELECT pg_advisory_unlock(727134)"))
+            conn.commit()
 
 
 def open_session() -> Session:

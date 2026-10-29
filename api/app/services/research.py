@@ -1,5 +1,5 @@
+import io
 import json
-import uuid
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -9,7 +9,8 @@ from sqlalchemy.orm import Session, selectinload
 
 from app.models import ResearchItem
 from app.services.records import load_hypotheses, load_interventions
-from app.settings import ALLOWLIST_PATH, PAPERS_DIR, get_settings
+from app.services.storage import save_pdf
+from app.settings import ALLOWLIST_PATH, get_settings
 
 BLOCKED_HOST_MARKERS = (
     "sci-hub",
@@ -90,10 +91,10 @@ def journal_for(url: str, explicit: str = "") -> str:
     return ""
 
 
-def extract_pdf_text(path: Path, limit: int = EXCERPT_CHARS) -> str:
+def extract_pdf_text(source: Path | bytes, limit: int = EXCERPT_CHARS) -> str:
     from pypdf import PdfReader
 
-    reader = PdfReader(str(path))
+    reader = PdfReader(io.BytesIO(source) if isinstance(source, bytes) else str(source))
     parts: list[str] = []
     for page in reader.pages[:8]:
         parts.append(page.extract_text() or "")
@@ -149,13 +150,9 @@ def _store_pdf(db: Session, *, title: str, journal: str, year: int | None, url: 
             db.commit()
             db.refresh(existing)
         return existing
-    PAPERS_DIR.mkdir(parents=True, exist_ok=True)
-    filename = f"{uuid.uuid4().hex}.pdf"
-    path = PAPERS_DIR / filename
-    path.write_bytes(body)
-    excerpt = ""
+    location = save_pdf(body)
     try:
-        excerpt = extract_pdf_text(path)
+        excerpt = extract_pdf_text(body)
     except Exception:
         excerpt = ""
     item = ResearchItem(
@@ -163,7 +160,7 @@ def _store_pdf(db: Session, *, title: str, journal: str, year: int | None, url: 
         journal=journal[:200],
         year=year,
         pdf_url=url,
-        local_path=str(path),
+        local_path=location,
         excerpt=excerpt,
         query=query,
         relevance_note=_relevance_note(query, title, journal, excerpt),

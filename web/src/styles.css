@@ -222,8 +222,121 @@ table.theories td .pill { display: inline-block; margin-left: 0.4rem; }
   border: 0;
 }
 
+h3 { overflow-wrap: anywhere; }
+pre { white-space: pre-wrap; word-break: break-word; }
+
+.aside-foot { display: grid; gap: 1rem; }
+.account { display: grid; gap: 0.35rem; justify-items: start; overflow-wrap: anywhere; }
+button.small { padding: 0.3rem 0.8rem; font-size: 0.9rem; }
+button.add-toggle { margin: 0.6rem 0 0.2rem; }
+.links { display: flex; flex-wrap: wrap; gap: 1rem; }
+details > summary { cursor: pointer; color: #0f6e56; margin: 0.4rem 0; }
+
+a.button {
+  display: inline-block;
+  background: #0f6e56;
+  color: #f7f3ea;
+  border-radius: 999px;
+  padding: 0.75rem 1.4rem;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.loading { padding: 2rem; color: #5e564c; }
+
+.signin {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+}
+.signin-card { width: min(420px, 100%); display: grid; gap: 0.8rem; justify-items: start; }
+
 @media (max-width: 800px) {
   .app { grid-template-columns: 1fr; }
   .form.inline, .split { grid-template-columns: 1fr; }
-  main { padding: 1rem; }
+
+  aside {
+    border-right: 0;
+    border-bottom: 1px solid #e2d8c8;
+    padding: 0.9rem 1rem 0.8rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .brand { display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap; }
+  .mark { font-size: 1.45rem; }
+  .brand .aside-copy { margin: 0; font-size: 0.9rem; }
+  .aside-foot { grid-template-columns: 1fr auto; align-items: end; gap: 0.8rem; }
+  .account { justify-items: end; text-align: right; font-size: 0.85rem; }
+
+  nav {
+    position: fixed;
+    z-index: 20;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.25rem;
+    padding: 0.4rem 0.4rem calc(0.4rem + env(safe-area-inset-bottom));
+    background: rgba(255, 252, 246, 0.97);
+    border-top: 1px solid #e2d8c8;
+    box-shadow: 0 -6px 18px rgba(30, 26, 22, 0.06);
+  }
+  button.nav {
+    border: 0;
+    text-align: center;
+    font-size: 0.78rem;
+    padding: 0.65rem 0.1rem;
+    min-height: 44px;
+  }
+
+  main {
+    padding: 1rem 1rem calc(5.5rem + env(safe-area-inset-bottom));
+    max-width: none;
+    min-width: 0;
+  }
+  .banner { font-size: 0.9rem; }
+  .card { padding: 0.9rem; border-radius: 14px; }
+  .card-top { flex-wrap: wrap; gap: 0.4rem; }
+
+  button { min-height: 44px; }
+  button.chip { min-height: 36px; }
+  input, select, textarea, .tz select, label input, label select, label textarea { font-size: 16px; }
+  .row-actions button { flex: 1 1 auto; }
+  .voice-panel { justify-items: stretch; }
+  button.voice { width: 100%; }
+}
+
+@media (max-width: 640px) {
+  .table-scroll { overflow: visible; border: 0; background: transparent; }
+  table.theories,
+  table.theories tbody,
+  table.theories tr,
+  table.theories td { display: block; width: 100%; }
+  table.theories { min-width: 0; }
+  table.theories thead { display: none; }
+  table.theories tr {
+    background: #fffdf8;
+    border: 1px solid #e2d8c8;
+    border-radius: 14px;
+    margin: 0 0 0.7rem;
+    padding: 0.4rem 0.2rem;
+  }
+  table.theories tr.detail { margin-top: -0.5rem; border-top: 0; border-radius: 0 0 14px 14px; }
+  table.theories td { max-width: none; border-bottom: 0; padding: 0.35rem 0.75rem; }
+  table.theories td.theory { font-size: 1.05rem; min-width: 0; }
+  table.theories td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #7a7065;
+  }
+  table.theories td.actions { display: flex; gap: 0.5rem; }
+  table.theories td.actions button { margin: 0; flex: 1; }
 }

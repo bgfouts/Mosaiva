@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { api } from "../api";
 import { Hypothesis, Intervention } from "../types";
 
@@ -34,6 +34,8 @@ export function Interventions() {
   const [form, setForm] = useState<FormState>(empty);
   const [editing, setEditing] = useState<number | null>(null);
   const [error, setError] = useState("");
+  const [formOpen, setFormOpen] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   async function load() {
     const [interventions, ideas] = await Promise.all([
@@ -86,6 +88,7 @@ export function Interventions() {
       }
       setForm(empty);
       setEditing(null);
+      setFormOpen(false);
       await load();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not save the intervention.");
@@ -115,6 +118,8 @@ export function Interventions() {
       side_effect_notes: row.side_effect_notes,
       hypothesis_ids: row.hypothesis_ids,
     });
+    setFormOpen(true);
+    window.requestAnimationFrame(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
   }
 
   return (
@@ -127,7 +132,13 @@ export function Interventions() {
         </p>
       </header>
       {error && <p className="alert">{error}</p>}
-      <form className="card form" onSubmit={onSubmit}>
+      {!formOpen && (
+        <button type="button" className="ghost add-toggle" onClick={() => setFormOpen(true)}>
+          Add an intervention
+        </button>
+      )}
+      {formOpen && (
+      <form ref={formRef} className="card form" onSubmit={onSubmit}>
         <label>
           Name
           <input value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} required />
@@ -251,20 +262,20 @@ export function Interventions() {
         </div>
         <div className="row-actions">
           <button type="submit">{editing ? "Save intervention" : "Add intervention"}</button>
-          {editing && (
-            <button
-              type="button"
-              className="ghost"
-              onClick={() => {
-                setEditing(null);
-                setForm(empty);
-              }}
-            >
-              Cancel edit
-            </button>
-          )}
+          <button
+            type="button"
+            className="ghost"
+            onClick={() => {
+              setEditing(null);
+              setForm(empty);
+              setFormOpen(false);
+            }}
+          >
+            {editing ? "Cancel edit" : "Close"}
+          </button>
         </div>
       </form>
+      )}
       <div className="stack">
         {rows.length === 0 && <p className="empty">No interventions yet.</p>}
         {rows.map((row) => (

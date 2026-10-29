@@ -96,24 +96,37 @@ export function Research() {
                   .join(" · ")}
               </p>
             )}
-            <p>
+            <p className="links">
               <a href={item.pdf_url} target="_blank" rel="noreferrer">
                 Free PDF
               </a>
+              {item.has_saved_copy && (
+                <a href={`/api/research/${item.id}/pdf`} target="_blank" rel="noreferrer">
+                  Saved copy
+                </a>
+              )}
             </p>
-            {item.excerpt && <p className="excerpt">{item.excerpt.slice(0, 500)}</p>}
-            <div className="chips">
-              {hypotheses.map((hypothesis) => (
-                <button
-                  type="button"
-                  key={hypothesis.id}
-                  className={item.hypothesis_ids.includes(hypothesis.id) ? "chip on" : "chip"}
-                  onClick={() => link(item, hypothesis.id)}
-                >
-                  {hypothesis.title}
-                </button>
-              ))}
-            </div>
+            {item.excerpt && (
+              <details className="excerpt-toggle">
+                <summary>Opening of the paper</summary>
+                <p className="excerpt">{item.excerpt.slice(0, 500)}</p>
+              </details>
+            )}
+            <details className="link-toggle">
+              <summary>Linked theories ({item.hypothesis_ids.length})</summary>
+              <div className="chips">
+                {hypotheses.map((hypothesis) => (
+                  <button
+                    type="button"
+                    key={hypothesis.id}
+                    className={item.hypothesis_ids.includes(hypothesis.id) ? "chip on" : "chip"}
+                    onClick={() => link(item, hypothesis.id)}
+                  >
+                    {hypothesis.title}
+                  </button>
+                ))}
+              </div>
+            </details>
           </article>
         ))}
       </div>
